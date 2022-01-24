@@ -1,2 +1,2 @@
-# Season2022
+# 2022RapidReact
 
