@@ -59,6 +59,11 @@ public class SwerveModule {
 
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
 
+    //clear sticky faults
+    this.m_turningMotor.clearStickyFaults();
+    this.m_turningEncoder.clearStickyFaults();
+    this.m_driveMotor.clearStickyFaults();
+
     //For driving motor, use Falcon integrated sensor as PID controller
     //set drving motor profiles
     TalonFXConfiguration talon_configs = new TalonFXConfiguration();
@@ -82,7 +87,8 @@ public class SwerveModule {
 
 
     // Set whether turning encoder should be reversed or not
-    m_turningMotor.setInverted(turningEncoderReversed);
+    m_turningMotor.setSensorPhase(true);
+
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -124,5 +130,8 @@ public class SwerveModule {
   /** Zeros all the SwerveModule encoders. */
   public void resetEncoders() {
     m_turningEncoder.setPosition(0);
+    m_turningEncoder.clearStickyFaults();
+    m_driveMotor.clearStickyFaults();
+    m_turningMotor.clearStickyFaults();
   }
 }
