@@ -88,6 +88,7 @@ public class SwerveModule {
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
+    //m_turningMotor.setInverted(turningEncoderReversed);
 
 
     // Limit the PID Controller's input range between -pi and pi and set the input
