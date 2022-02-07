@@ -69,8 +69,8 @@ public final class Constants {
   }
 
   public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+    public static final double kMaxModuleAngularSpeed = 2250;
+    public static final double kMaxModuleAngularAcceleration = 2250;
 
     public static final int kEncoderCPR = 1024;
     public static final double kWheelDiameterMeters = 0.15;
@@ -82,21 +82,19 @@ public final class Constants {
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
         (2 * Math.PI) / (double) kEncoderCPR;
 
-    public static final double kPModuleTurningController = 0.1;
+    public static final double kPModuleTurningController = 1;
+    public static final double kFModuleTurningController = 0.13;
 
     public static final double kPModuleDriveController = 0.1;
     public static final double kIModuleDriveController = 0.1;
     public static final double kDModuleDriveController = 0.1;
+
+    public static final double kTurningMax=4096/2*8/3;
+    public static final double kPeakOutput=0.8;
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-  }
-  public static final class PIDConstant{
-    public static final double kPeakOutput=0.8;
-    public static final double kP=0.15;
-    public static final double kTurningMax=4096/2*8/3;
-  
   }
 
   public static final class JoystickConstants{
