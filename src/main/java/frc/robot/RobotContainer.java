@@ -118,6 +118,6 @@ public class RobotContainer {
    * 
    */
   public void JoyStickDrive() {
-      m_robotDrive.drive( m_driverController.getLeftX(), m_driverController.getLeftY(),m_driverController.getRightX(),false);
+      m_robotDrive.drivestraight( m_driverController.getLeftX(), m_driverController.getLeftY());
   }
 }

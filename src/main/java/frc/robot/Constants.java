@@ -99,7 +99,9 @@ public final class Constants {
   
   }
 
-
+  public static final class JoystickConstants{
+    public static final double kReadEpsilon = 0.05;
+  }
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;

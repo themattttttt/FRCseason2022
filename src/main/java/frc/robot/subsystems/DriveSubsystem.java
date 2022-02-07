@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.DriveConstants;
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.JoystickConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   // Robot swerve modules
@@ -110,6 +111,30 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+    /**
+   * Method to drive straight the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   * @param rot Angular rate of the robot.
+   */
+  @SuppressWarnings("ParameterName")
+  public void drivestraight(double xSpeed, double ySpeed) {
+    double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
+    if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
+      return;
+    }
+    if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
+      speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
+    }
+    var angle = new Rotation2d(xSpeed,ySpeed);
+    var swerveModuleState = new SwerveModuleState(speedMetersPerSecond, angle);
+    
+    m_frontLeft.setDesiredState(swerveModuleState);
+    m_frontRight.setDesiredState(swerveModuleState);
+    m_rearLeft.setDesiredState(swerveModuleState);
+    m_rearRight.setDesiredState(swerveModuleState);
   }
 
   /**
