@@ -31,10 +31,10 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -111,5 +111,13 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+  }
+  /**
+   * Use this to use joystick to control
+   *
+   * 
+   */
+  public void JoyStickDrive() {
+      m_robotDrive.drive( m_driverController.getLeftX(), m_driverController.getLeftY(),m_driverController.getRightX(),false);
   }
 }

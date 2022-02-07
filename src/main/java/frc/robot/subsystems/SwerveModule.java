@@ -91,9 +91,14 @@ public class SwerveModule {
 
     //limit peak output 
     turning_configs.peakOutputForward = PIDConstant.kPeakOutput;
+    //set turning motor PID 
     turning_configs.slot0.kP=PIDConstant.kP;
     turning_configs.slot0.closedLoopPeakOutput = PIDConstant.kPeakOutput;
     turning_configs.slot0.closedLoopPeriod = 10;
+    //For integrals, integrate errors out of the zone and accumulate until the max
+    turning_configs.slot0.integralZone = 300;
+    turning_configs.slot0.maxIntegralAccumulator = 1000;
+
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
     turning_configs.forwardSoftLimitEnable=true;
