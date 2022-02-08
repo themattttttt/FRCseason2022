@@ -60,15 +60,16 @@ public class SwerveModule {
     //For driving motor, use Falcon integrated sensor as PID controller
     //set drving motor profiles
     TalonFXConfiguration talon_configs = new TalonFXConfiguration();
-			/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-			talon_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-      talon_configs.diff0Term = FeedbackDevice.IntegratedSensor;
-      talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
+		/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
+		talon_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+    talon_configs.diff0Term = FeedbackDevice.IntegratedSensor;
+    talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
       
-			/* config all the settings */
-			m_driveMotor.configAllSettings(talon_configs);
-      m_driveMotor.setSensorPhase(true);
-      m_driveMotor.setInverted(driveEncoderReversed);
+		/* config all the settings */
+		m_driveMotor.configAllSettings(talon_configs);
+    m_driveMotor.setSensorPhase(true);
+    m_driveMotor.setInverted(driveEncoderReversed);
+    m_driveMotor.setNeutralMode(NeutralMode.Brake);
 
 
     //use CANCoder to set up feedback for the turning motor
@@ -89,18 +90,19 @@ public class SwerveModule {
     //set turning motor PID 
     turning_configs.slot0.kP = ModuleConstants.kPModuleTurningController;
     turning_configs.slot0.kF = ModuleConstants.kFModuleTurningController;
+    turning_configs.slot0.kF = ModuleConstants.kIModuleTurningController;
     turning_configs.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
     turning_configs.slot0.closedLoopPeriod = 10;
     //For integrals, integrate errors out of the zone and accumulate until the max
-    turning_configs.slot0.integralZone = 300;
+    turning_configs.slot0.integralZone = 100;
     turning_configs.slot0.maxIntegralAccumulator = 1000;
 
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
     turning_configs.forwardSoftLimitEnable = true;
-    turning_configs.forwardSoftLimitThreshold = ModuleConstants.kTurningMax;
+    turning_configs.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
     turning_configs.reverseSoftLimitEnable = true;
-    turning_configs.reverseSoftLimitThreshold = -ModuleConstants.kTurningMax;
+    turning_configs.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
 
     /* set deadband to super small 0.001 (0.1 %).
 			The default deadband is 0.04 (4 %) */
