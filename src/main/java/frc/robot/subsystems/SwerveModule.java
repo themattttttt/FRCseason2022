@@ -71,7 +71,7 @@ public class SwerveModule {
       m_driveMotor.setInverted(driveEncoderReversed);
       m_driveMotor.setNeutralMode(NeutralMode.Brake);
 
-      
+
     //use CANCoder to set up feedback for the turning motor
     TalonSRXConfiguration turning_configs = new TalonSRXConfiguration();
     turning_configs.remoteFilter0 = new FilterConfiguration();
@@ -90,10 +90,12 @@ public class SwerveModule {
     //set turning motor PID 
     turning_configs.slot0.kP = ModuleConstants.kPModuleTurningController;
     turning_configs.slot0.kF = ModuleConstants.kFModuleTurningController;
-    turning_configs.slot0.kI = ModuleConstants.kIModuleTurningController;
+    
     turning_configs.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
-    turning_configs.slot0.closedLoopPeriod = 10;
+    turning_configs.slot0.closedLoopPeriod = 1;
+    
     //For integrals, integrate errors out of the zone and accumulate until the max
+    turning_configs.slot0.allowableClosedloopError = 10;
     turning_configs.slot0.integralZone = 300;
     turning_configs.slot0.maxIntegralAccumulator = 1000;
 
@@ -106,7 +108,7 @@ public class SwerveModule {
 
     /* set deadband to super small 0.001 (0.1 %).
 			The default deadband is 0.04 (4 %) */
-    turning_configs.neutralDeadband = 0.02;
+    turning_configs.neutralDeadband = 0.05;
 
     	/* Set acceleration and vcruise velocity - see documentation */
     turning_configs.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
@@ -116,8 +118,8 @@ public class SwerveModule {
     m_turningMotor.configAllSettings(turning_configs);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
-		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
-		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 1);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 1);
 
     //Set neutral mode to brake to self lock the motor when power on
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
