@@ -118,8 +118,8 @@ public class SwerveModule {
     m_turningMotor.configAllSettings(turning_configs);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
-		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 1);
-		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 1);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20);
 
     //Set neutral mode to brake to self lock the motor when power on
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
