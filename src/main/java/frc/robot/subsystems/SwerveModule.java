@@ -152,6 +152,7 @@ public class SwerveModule {
 
     // Calculate the turning motor output from the turning PID controller.
     double driveOutput = state.speedMetersPerSecond;
+    //use raw readings and multiply by the ratio to get the actual turnning of the gear
     double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
     //m_driveMotor.set(ControlMode.Velocity, driveOutput);
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
