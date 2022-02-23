@@ -122,16 +122,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drivestraight(double xSpeed, double ySpeed) {
-    if(xSpeed < JoystickConstants.kReadEpsilon){
+    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
       xSpeed = 0.0;
     }
-    if(ySpeed < JoystickConstants.kReadEpsilon){
+    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
       ySpeed = 0.0;
     }
     double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
-      return;
-    }
     if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
       speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
     }

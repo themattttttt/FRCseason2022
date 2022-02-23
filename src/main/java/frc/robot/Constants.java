@@ -92,6 +92,8 @@ public final class Constants {
 
     public static final double kTurningMax=4096/2*8/3;
     public static final double kPeakOutput=0.8;
+
+    public static final double kDrivingMax = 5000;
   }
 
   public static final class OIConstants {
@@ -99,7 +101,7 @@ public final class Constants {
   }
 
   public static final class JoystickConstants{
-    public static final double kReadEpsilon = 0.05;
+    public static final double kReadEpsilon = 0.03;
   }
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
