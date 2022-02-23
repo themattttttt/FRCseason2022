@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Constants.DriveConstants;
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -121,6 +122,12 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drivestraight(double xSpeed, double ySpeed) {
+    if(xSpeed < JoystickConstants.kReadEpsilon){
+      xSpeed = 0.0;
+    }
+    if(ySpeed < JoystickConstants.kReadEpsilon){
+      ySpeed = 0.0;
+    }
     double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
     if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
       return;
