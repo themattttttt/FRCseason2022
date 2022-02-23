@@ -64,7 +64,6 @@ public class SwerveModule {
 		talon_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
     talon_configs.diff0Term = FeedbackDevice.IntegratedSensor;
     talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
-    talon_configs.slot0.kP = 0.1;
       
 		/* config all the settings */
 		m_driveMotor.configAllSettings(talon_configs);
