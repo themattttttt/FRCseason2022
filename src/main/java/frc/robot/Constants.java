@@ -48,6 +48,10 @@ public final class Constants {
     // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = 0.7;
     // Distance between front and back wheels on robot
+
+    public static final double kTurnToleranceDeg = 0.0;
+    public static final double kTurnRateToleranceDegPerS = 0.0;
+
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -92,8 +96,6 @@ public final class Constants {
 
     public static final double kTurningMax=4096/2*8/3;
     public static final double kPeakOutput=0.8;
-
-    public static final double kDrivingMax = 5000;
   }
 
   public static final class OIConstants {
@@ -101,7 +103,7 @@ public final class Constants {
   }
 
   public static final class JoystickConstants{
-    public static final double kReadEpsilon = 0.03;
+    public static final double kReadEpsilon = 0.05;
   }
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
@@ -117,5 +119,21 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+  }
+  public static final class ArmConstants{
+      public static final int kArmMotorPort = 0;
+      public static final double kPArmController = 0;
+      public static final double kDArmController = 0;
+      public static final double kIArmController = 0;
+      //public static final double kPArmController = 0;
+      public static final double kSVolts = 1;
+      public static final double kGVolts = 1;
+      public static final double kVVoltSecondPerRad = 0.5;
+      public static final double kAVoltSecondSquaredPerRad = 0.1;
+  
+      public static final double kMaxVelocityRadPerSecond = 3;
+      public static final double kMaxAccelerationRadPerSecSquared = 10;
+      public static final double kEncoderDistancePerPulse=0;
+      public static final double kArmOffsetRads=0;
   }
 }
