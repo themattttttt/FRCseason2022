@@ -11,19 +11,19 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+//import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+//import edu.wpi.first.math.trajectory.TrapezoidProfile;
 //import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ModuleConstants;
 //import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+//import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 
 public class SwerveModule {
   private final TalonFX m_driveMotor;
@@ -101,9 +101,9 @@ public class SwerveModule {
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
     turning_configs.forwardSoftLimitEnable = true;
-    turning_configs.forwardSoftLimitThreshold = ModuleConstants.kTurningMax;
+    turning_configs.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
     turning_configs.reverseSoftLimitEnable = true;
-    turning_configs.reverseSoftLimitThreshold = -ModuleConstants.kTurningMax;
+    turning_configs.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
 
     /* set deadband to super small 0.001 (0.1 %).
 			The default deadband is 0.04 (4 %) */
@@ -150,17 +150,28 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-
     // Calculate the turning motor output from the turning PID controller.
-    double driveOutput = state.speedMetersPerSecond*ModuleConstants.kDrivingMax;
-    // System.out.print("\n speed ");
-    // System.out.print(driveOutput);
-    // System.out.print("\n angle ");
-    // System.out.print(state.angle.getDegrees());
     //use raw readings and multiply by the ratio to get the actual turnning of the gear
     double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
-    m_driveMotor.set(ControlMode.Velocity, driveOutput);
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
+  }
+
+  public void setTurnDesiredState(SwerveModuleState desiredState) {
+    // Optimize the reference state to avoid spinning further than 90 degrees
+    SwerveModuleState state =
+        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
+    // Calculate the turning motor output from the turning PID controller.
+    //use raw readings and multiply by the ratio to get the actual turnning of the gear
+    double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+    m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
+  }
+
+  public void setDriveDesiredState(SwerveModuleState desiredState) {
+    // Optimize the reference state to avoid spinning further than 90 degrees
+    SwerveModuleState state =
+        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
+    double driveOutput = state.speedMetersPerSecond;
+    m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
   /** Zeros all the SwerveModule encoders. */
