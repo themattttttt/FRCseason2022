@@ -64,4 +64,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
   public double getMeasurement() {
     return m_motor.getSelectedSensorPosition() + ArmConstants.kArmOffsetRads;
   }
+  public double getHeading() {
+    return 0;
+  }
 }
