@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+
+import java.lang.Object;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,14 +18,18 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.DefenseXCommand;
+import frc.robot.commands.DefenseOCommand;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
 /*
@@ -35,9 +44,14 @@ public class RobotContainer {
 
   // The driver's controller
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  private final JoystickButton XButton=new JoystickButton(m_driverController, 5);
+  private final JoystickButton OButton=new JoystickButton(m_driverController, 6);
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the button bindings
     configureButtonBindings();
 
@@ -47,14 +61,8 @@ public class RobotContainer {
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         
-        new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    m_driverController.getLeftX(),
-                    m_driverController.getLeftY(),
-                    m_driverController.getRightX(),
-                    false),
-            m_robotDrive));
+        new TurnCommand(0,0, m_robotDrive).andThen(new DriveCommand(0,0,m_robotDrive))
+    );
   }
 
   /**
@@ -63,7 +71,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+      XButton.whenHeld(new DefenseXCommand(m_robotDrive));
+      OButton.whenHeld(new DefenseOCommand(m_robotDrive));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
