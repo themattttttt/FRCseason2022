@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import frc.robot.Constants.PIDConfigConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -24,32 +27,66 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.kFrontLeftDriveMotorPort,
           DriveConstants.kFrontLeftTurningMotorPort,
           DriveConstants.kFrontLeftTurningEncoderPorts,
+          getDrivePIDconfig(PIDConfigConstants.kpFrontLeftDrive, 
+                       PIDConfigConstants.kiFrontLeftDrive, 
+                       PIDConfigConstants.kdFrontLeftDrive, 
+                       PIDConfigConstants.kfFrontLeftDrive),
+          getTurnPIDconfig(PIDConfigConstants.kpFrontLeftTurn, 
+                       PIDConfigConstants.kiFrontLeftTurn, 
+                       PIDConfigConstants.kdFrontLeftTurn, 
+                       PIDConfigConstants.kfFrontLeftTurn),
           DriveConstants.kFrontLeftDriveEncoderReversed,
-          DriveConstants.kFrontLeftTurningEncoderReversed);
+          DriveConstants.kFrontLeftTurningEncoderReversed
+          );
 
   private final SwerveModule m_rearLeft =
       new SwerveModule(
-          DriveConstants.kRearLeftDriveMotorPort,
-          DriveConstants.kRearLeftTurningMotorPort,
-          DriveConstants.kRearLeftTurningEncoderPorts,
-          DriveConstants.kRearLeftDriveEncoderReversed,
-          DriveConstants.kRearLeftTurningEncoderReversed);
+        DriveConstants.kRearLeftDriveMotorPort,
+        DriveConstants.kRearLeftTurningMotorPort,
+        DriveConstants.kRearLeftTurningEncoderPorts,
+        getDrivePIDconfig(PIDConfigConstants.kpRearLeftDrive, 
+                     PIDConfigConstants.kiRearLeftDrive, 
+                     PIDConfigConstants.kdRearLeftDrive, 
+                     PIDConfigConstants.kfRearLeftDrive),
+        getTurnPIDconfig(PIDConfigConstants.kpRearLeftTurn, 
+                     PIDConfigConstants.kiRearLeftTurn, 
+                     PIDConfigConstants.kdRearLeftTurn, 
+                     PIDConfigConstants.kfRearLeftTurn),
+        DriveConstants.kRearLeftDriveEncoderReversed,
+        DriveConstants.kRearLeftTurningEncoderReversed
+      );
 
   private final SwerveModule m_frontRight =
       new SwerveModule(
-          DriveConstants.kFrontRightDriveMotorPort,
-          DriveConstants.kFrontRightTurningMotorPort,
-          DriveConstants.kFrontRightTurningEncoderPorts,
-          DriveConstants.kFrontRightDriveEncoderReversed,
-          DriveConstants.kFrontRightTurningEncoderReversed);
+        DriveConstants.kFrontRightDriveMotorPort,
+        DriveConstants.kFrontRightTurningMotorPort,
+        DriveConstants.kFrontRightTurningEncoderPorts,
+        getDrivePIDconfig(PIDConfigConstants.kpFrontRightDrive, 
+                     PIDConfigConstants.kiFrontRightDrive, 
+                     PIDConfigConstants.kdFrontRightDrive, 
+                     PIDConfigConstants.kfFrontRightDrive),
+        getTurnPIDconfig(PIDConfigConstants.kpFrontRightTurn, 
+                     PIDConfigConstants.kiFrontRightTurn, 
+                     PIDConfigConstants.kdFrontRightTurn, 
+                     PIDConfigConstants.kfFrontRightTurn),
+        DriveConstants.kFrontRightDriveEncoderReversed,
+        DriveConstants.kFrontRightTurningEncoderReversed);
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
-          DriveConstants.kRearRightDriveMotorPort,
-          DriveConstants.kRearRightTurningMotorPort,
-          DriveConstants.kRearRightTurningEncoderPorts,
-          DriveConstants.kRearRightDriveEncoderReversed,
-          DriveConstants.kRearRightTurningEncoderReversed);
+        DriveConstants.kRearRightDriveMotorPort,
+        DriveConstants.kRearRightTurningMotorPort,
+        DriveConstants.kRearRightTurningEncoderPorts,
+        getDrivePIDconfig(PIDConfigConstants.kpRearRightDrive, 
+                     PIDConfigConstants.kiRearRightDrive, 
+                     PIDConfigConstants.kdRearRightDrive, 
+                     PIDConfigConstants.kfRearRightDrive),
+        getTurnPIDconfig(PIDConfigConstants.kpRearRightTurn, 
+                     PIDConfigConstants.kiRearRightTurn, 
+                     PIDConfigConstants.kdRearRightTurn, 
+                     PIDConfigConstants.kfRearRightTurn),
+        DriveConstants.kRearRightDriveEncoderReversed,
+        DriveConstants.kRearRightTurningEncoderReversed);
 
   // The gyro sensor
   //private final Gyro m_gyro = new ADXRS450_Gyro();
@@ -244,5 +281,22 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     //return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     return 0.0;
+  }
+
+  public static TalonFXConfiguration getDrivePIDconfig(double kP, double kI, double kD, double kF){
+    TalonFXConfiguration talon_config = new TalonFXConfiguration();
+    talon_config.slot0.kP = kP;
+    talon_config.slot0.kI=kI;
+    talon_config.slot0.kD=kD;
+    talon_config.slot0.kF=kF;
+    return talon_config;
+  }
+  public static TalonSRXConfiguration getTurnPIDconfig(double kP, double kI, double kD, double kF){
+    TalonSRXConfiguration turning_config = new TalonSRXConfiguration();
+    turning_config.slot0.kP = kP;
+    turning_config.slot0.kI=kI;
+    turning_config.slot0.kD=kD;
+    turning_config.slot0.kF=kF;
+    return turning_config;
   }
 }

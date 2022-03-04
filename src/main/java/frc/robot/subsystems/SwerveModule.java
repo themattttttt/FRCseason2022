@@ -140,6 +140,90 @@ public class SwerveModule {
   }
 
 
+  public SwerveModule(
+    int driveMotorChannel,
+    int turningMotorChannel,
+    int turningEncoderPort,
+    TalonFXConfiguration drive_config,
+    TalonSRXConfiguration turn_config,
+    boolean driveEncoderReversed,
+    boolean turnEncoderReversed) {
+    this.m_driveMotor = new TalonFX(driveMotorChannel);
+    this.m_turningMotor = new TalonSRX(turningMotorChannel);
+    this.m_turningEncoder = new CANCoder(turningEncoderPort);
+
+    //config common settings
+    this.m_turningMotor.clearStickyFaults();
+    this.m_turningEncoder.clearStickyFaults();
+    this.m_driveMotor.clearStickyFaults();
+
+    drive_config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+    drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
+    drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
+
+    m_driveMotor.configAllSettings(drive_config);
+    m_driveMotor.setSensorPhase(true);
+    m_driveMotor.setInverted(driveEncoderReversed);
+    m_driveMotor.setNeutralMode(NeutralMode.Brake);
+
+    turn_config.remoteFilter0 = new FilterConfiguration();
+    turn_config.remoteFilter0.remoteSensorDeviceID = turningEncoderPort;
+    turn_config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+    turn_config.diff0Term=FeedbackDevice.RemoteSensor0;
+    turn_config.sum0Term=FeedbackDevice.RemoteSensor0;
+    turn_config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+
+    //limit peak output 
+    turn_config.peakOutputForward = 1;
+    turn_config.peakOutputReverse = -1;
+    turn_config.nominalOutputForward = 0;
+    turn_config.nominalOutputReverse = 0;
+
+    turn_config.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
+    turn_config.slot0.closedLoopPeriod = 1;
+    //For integrals, integrate errors out of the zone and accumulate until the max
+    turn_config.slot0.integralZone = 100;
+    turn_config.slot0.maxIntegralAccumulator = 1000;
+
+    //First, we configure the soft limits on the motor controller 
+    //so that they’re enabled and have values for the forward and reverse limits
+    turn_config.forwardSoftLimitEnable = true;
+    turn_config.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
+    turn_config.reverseSoftLimitEnable = true;
+    turn_config.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
+
+    /* set deadband to super small 0.001 (0.1 %).
+			The default deadband is 0.04 (4 %) */
+    turn_config.neutralDeadband = 0.05;
+
+    	/* Set acceleration and vcruise velocity - see documentation */
+    turn_config.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
+    turn_config.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
+
+    //set configs
+    m_turningMotor.configAllSettings(turn_config);
+
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20);
+
+    //Set neutral mode to brake to self lock the motor when power on
+    m_turningMotor.setNeutralMode(NeutralMode.Brake);
+    
+
+    // Set whether turning encoder should be reversed or not
+    m_turningMotor.setSensorPhase(true);
+    //m_turningMotor.setInverted(turningEncoderReversed);
+
+    /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
+		
+
+    //config common motor settings
+
+
+    }
+
+
   /**
    * Sets the desired state for the module.
    *
