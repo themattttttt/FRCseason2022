@@ -16,15 +16,15 @@ public class TurnCommand extends PIDCommand {
    * @param targetAngle The turning angle
    * @param drive The drive subsystem to use
    */
-  public TurnCommand(double targetAngle, DriveSubsystem drive) {
+  public TurnCommand(double xSpeed, double ySpeed, DriveSubsystem drive) {
     super(
         new PIDController(ModuleConstants.kPModuleDriveController, ModuleConstants.kIModuleDriveController, ModuleConstants.kDModuleDriveController),
         // Close loop on heading
         drive::getHeading,
         // Set reference to target
-        targetAngle,
+        0,
         // Pipe output to turn robot
-        output -> drive.driveturning(0, output),
+        output -> drive.driveturning(xSpeed, ySpeed),
         // Require the drive
         drive);
 

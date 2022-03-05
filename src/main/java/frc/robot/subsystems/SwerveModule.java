@@ -37,84 +37,80 @@ public class SwerveModule {
    * @param driveMotorChannel ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
+  
+
+  /**
+   * Returns the current state of the module.
+   *
+   * @return The current state of the module.
+   */
+  public SwerveModuleState getState() {
+    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(m_turningEncoder.getPosition()));
+  }
+
+
   public SwerveModule(
-      int driveMotorChannel,
-      int turningMotorChannel,
-      int turningEncoderPort,
-      boolean driveEncoderReversed,
-      boolean turningEncoderReversed) {
+    int driveMotorChannel,
+    int turningMotorChannel,
+    int turningEncoderPort,
+    TalonFXConfiguration drive_config,
+    TalonSRXConfiguration turn_config,
+    boolean driveEncoderReversed,
+    boolean turnEncoderReversed) {
     this.m_driveMotor = new TalonFX(driveMotorChannel);
     this.m_turningMotor = new TalonSRX(turningMotorChannel);
-
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
 
-    //clear sticky faults
+    //config common settings
     this.m_turningMotor.clearStickyFaults();
     this.m_turningEncoder.clearStickyFaults();
     this.m_driveMotor.clearStickyFaults();
 
-    //set up coefficent to make sure the encoder returns a reading of actual degrees
-    double turning_coefficient = m_turningEncoder.configGetFeedbackCoefficient();
+    drive_config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+    drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
+    drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
 
-
-    //For driving motor, use Falcon integrated sensor as PID controller
-    //set drving motor profiles
-    TalonFXConfiguration talon_configs = new TalonFXConfiguration();
-		/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-		talon_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-    talon_configs.diff0Term = FeedbackDevice.IntegratedSensor;
-    talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
-      
-		/* config all the settings */
-		m_driveMotor.configAllSettings(talon_configs);
+    m_driveMotor.configAllSettings(drive_config);
     m_driveMotor.setSensorPhase(true);
     m_driveMotor.setInverted(driveEncoderReversed);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
 
-
-    //use CANCoder to set up feedback for the turning motor
-    TalonSRXConfiguration turning_configs = new TalonSRXConfiguration();
-    turning_configs.remoteFilter0 = new FilterConfiguration();
-    turning_configs.remoteFilter0.remoteSensorDeviceID = turningEncoderPort;
-    turning_configs.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
-    turning_configs.diff0Term=FeedbackDevice.RemoteSensor0;
-    turning_configs.sum0Term=FeedbackDevice.RemoteSensor0;
-    turning_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    turn_config.remoteFilter0 = new FilterConfiguration();
+    turn_config.remoteFilter0.remoteSensorDeviceID = turningEncoderPort;
+    turn_config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+    turn_config.diff0Term=FeedbackDevice.RemoteSensor0;
+    turn_config.sum0Term=FeedbackDevice.RemoteSensor0;
+    turn_config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
 
     //limit peak output 
-    turning_configs.peakOutputForward = 1;
-    turning_configs.peakOutputReverse = -1;
-    turning_configs.nominalOutputForward = 0;
-    turning_configs.nominalOutputReverse = 0;
+    turn_config.peakOutputForward = 1;
+    turn_config.peakOutputReverse = -1;
+    turn_config.nominalOutputForward = 0;
+    turn_config.nominalOutputReverse = 0;
 
-    //set turning motor PID 
-    turning_configs.slot0.kP = ModuleConstants.kPModuleTurningController;
-    turning_configs.slot0.kF = ModuleConstants.kFModuleTurningController;
-    turning_configs.slot0.kI = ModuleConstants.kIModuleTurningController;
-    turning_configs.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
-    turning_configs.slot0.closedLoopPeriod = 1;
+    turn_config.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
+    turn_config.slot0.closedLoopPeriod = 1;
     //For integrals, integrate errors out of the zone and accumulate until the max
-    turning_configs.slot0.allowableClosedloopError = 10;
-    turning_configs.slot0.integralZone = 100;
-    turning_configs.slot0.maxIntegralAccumulator = 1000;
+    turn_config.slot0.integralZone = 100;
+    turn_config.slot0.maxIntegralAccumulator = 1000;
 
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
-    turning_configs.forwardSoftLimitEnable = true;
-    turning_configs.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
-    turning_configs.reverseSoftLimitEnable = true;
-    turning_configs.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
+    turn_config.forwardSoftLimitEnable = true;
+    turn_config.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
+    turn_config.reverseSoftLimitEnable = true;
+    turn_config.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
 
     /* set deadband to super small 0.001 (0.1 %).
 			The default deadband is 0.04 (4 %) */
-    turning_configs.neutralDeadband = 0.05;
+    turn_config.neutralDeadband = 0.05;
 
     	/* Set acceleration and vcruise velocity - see documentation */
-    turning_configs.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
-    turning_configs.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
+    turn_config.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
+    turn_config.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
 
     //set configs
-    m_turningMotor.configAllSettings(turning_configs);
+    m_turningMotor.configAllSettings(turn_config);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
 		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
@@ -128,17 +124,13 @@ public class SwerveModule {
     m_turningMotor.setSensorPhase(true);
     //m_turningMotor.setInverted(turningEncoderReversed);
 
+    /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
+		
 
-  }
+    //config common motor settings
 
-  /**
-   * Returns the current state of the module.
-   *
-   * @return The current state of the module.
-   */
-  public SwerveModuleState getState() {
-    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(m_turningEncoder.getPosition()));
-  }
+
+    }
 
 
   /**

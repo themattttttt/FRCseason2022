@@ -1,32 +1,34 @@
 package frc.robot.commands;
 
-//import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.subsystems.DriveSubsystem;
-//import frc.robot.Constants.DriveConstants;
+
+
+import frc.robot.subsystems.ArmSubsystem;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.Constants.ModuleConstants;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import frc.robot.Constants.ArmConstants;
 
 
 /** A command that will turn the robot to the specified angle. */
-public class DriveCommand extends PIDCommand {
+public class ArmCommand extends PIDCommand {
   /**
    * Turns to robot to the specified angle.
    *
    * @param targetSpeed The speed of motor
    * @param drive The drive subsystem to use
    */
-  public DriveCommand(double xSpeed,double ySpeed, DriveSubsystem drive) {
+  public ArmCommand( double Output,TrapezoidProfile.State setpoint,ArmSubsystem arm) {
     super(
-        new PIDController(ModuleConstants.kPModuleDriveController, ModuleConstants.kIModuleDriveController, ModuleConstants.kDModuleDriveController),
+        new PIDController(ArmConstants.kPArmController, ArmConstants.kIArmController, ArmConstants.kDArmController),
         // Close loop on heading
-        drive::getHeading,
+        arm::getHeading,
         // Set reference to target
         0,
         // Pipe output to turn robot
-        output -> drive.drivestraight(xSpeed, ySpeed),
+        output -> arm.useOutput(Output,setpoint),
         // Require the drive
-        drive);
+        arm);
 
     // Set the controller to be continuous (because it is an angle controller)
     //getController().enableContinuousInput(-180, 180);
