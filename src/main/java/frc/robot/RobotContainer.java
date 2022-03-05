@@ -22,9 +22,6 @@ import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.DefenseXCommand;
-import frc.robot.commands.DefenseOCommand;
-import frc.robot.commands.DriveCommand;
 import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,8 +58,14 @@ public class RobotContainer {
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         
-        new TurnCommand(0,0, m_robotDrive).andThen(new DriveCommand(0,0,m_robotDrive))
-    );
+        new RunCommand(
+            () ->
+                m_robotDrive.drive(
+                    0.0,
+                    0.0,
+                    0.0,
+                    false),
+            m_robotDrive));
   }
 
   /**
@@ -134,9 +137,12 @@ public class RobotContainer {
   public Command getParallelMoveCommand(){
       Command MoveCommand = new RunCommand(
           () ->
-          m_robotDrive.drivestraight(m_driverController.getLeftX(), m_driverController.getLeftY()),
+          m_robotDrive.drivestraight(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
           m_robotDrive);
        // Run parallel moving, then stop at the end.
       return MoveCommand.andThen(()->m_robotDrive.drivestraight(0, 0));
+  }
+  public Command getTurnCommand(){
+      return new TurnCommand(90.0,m_robotDrive);
   }
 }
