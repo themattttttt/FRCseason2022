@@ -66,7 +66,7 @@ public class SwerveModule {
     talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
       
 		/* config all the settings */
-		m_driveMotor.configAllSettings(talon_configs);
+		//m_driveMotor.configAllSettings(talon_configs);
     m_driveMotor.setSensorPhase(true);
     m_driveMotor.setInverted(driveEncoderReversed);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
@@ -114,7 +114,7 @@ public class SwerveModule {
     turning_configs.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
 
     //set configs
-    m_turningMotor.configAllSettings(turning_configs);
+    //m_turningMotor.configAllSettings(turning_configs);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
 		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
@@ -152,8 +152,9 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
     // Calculate the turning motor output from the turning PID controller.
     //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+    double turnOutput = desiredState.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
+    m_driveMotor.set(ControlMode.Velocity, desiredState.speedMetersPerSecond*4000);
   }
 
   public void setTurnDesiredState(SwerveModuleState desiredState) {

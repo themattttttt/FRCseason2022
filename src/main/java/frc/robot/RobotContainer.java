@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -50,9 +51,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_driverController.getLeftX(),
-                    m_driverController.getLeftY(),
-                    m_driverController.getRightX(),
+                    0.0,
+                    0.0,
+                    0.0,
                     false),
             m_robotDrive));
   }
@@ -123,9 +124,12 @@ public class RobotContainer {
   public Command getParallelMoveCommand(){
       Command MoveCommand = new RunCommand(
           () ->
-          m_robotDrive.drivestraight(m_driverController.getLeftX(), m_driverController.getLeftY()),
+          m_robotDrive.drivestraight(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
           m_robotDrive);
        // Run parallel moving, then stop at the end.
       return MoveCommand.andThen(()->m_robotDrive.drivestraight(0, 0));
+  }
+  public Command getTurnCommand(){
+      return new TurnCommand(90.0,m_robotDrive);
   }
 }
