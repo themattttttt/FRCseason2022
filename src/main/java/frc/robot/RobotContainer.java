@@ -44,8 +44,10 @@ public class RobotContainer {
 
   // The driver's controller
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private final JoystickButton XButton=new JoystickButton(m_driverController, 5);
-  private final JoystickButton OButton=new JoystickButton(m_driverController, 6);
+
+  private final JoystickButton XButton=new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
+
+  private final JoystickButton OButton=new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
 
 
 
