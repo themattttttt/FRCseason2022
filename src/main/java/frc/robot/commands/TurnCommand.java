@@ -42,12 +42,11 @@ public class TurnCommand extends CommandBase {
     m_degree = targetAngle;
     m_xSpeed = Math.cos(Math.toRadians(targetAngle));
     m_ySpeed = Math.sin(Math.toRadians(targetAngle));
-    m_drive.setCurrentAngle(targetAngle);
   }
 
   @Override
   public void initialize() {
-
+    m_drive.setCurrentAngle(m_degree);
   }
 
   @Override

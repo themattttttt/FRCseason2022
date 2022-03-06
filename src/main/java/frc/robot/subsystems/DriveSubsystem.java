@@ -177,10 +177,10 @@ public class DriveSubsystem extends SubsystemBase {
     var angle = new Rotation2d(Math.toRadians(m_setAngle));
     var swerveModuleState = new SwerveModuleState(Speed,angle);
     
-    m_frontLeft.setDriveDesiredState(swerveModuleState);
-    m_frontRight.setDriveDesiredState(swerveModuleState);
-    m_rearLeft.setDriveDesiredState(swerveModuleState);
-    m_rearRight.setDriveDesiredState(swerveModuleState);
+    m_frontLeft.setDesiredState(swerveModuleState);
+    m_frontRight.setDesiredState(swerveModuleState);
+    m_rearLeft.setDesiredState(swerveModuleState);
+    m_rearRight.setDesiredState(swerveModuleState);
   }
 
   /**
@@ -202,17 +202,14 @@ public class DriveSubsystem extends SubsystemBase {
     if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
       ySpeed = 0.0;
     }
-    double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
-      speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
-    }
+
     var angle = new Rotation2d(xSpeed,ySpeed);
-    var swerveModuleState = new SwerveModuleState(speedMetersPerSecond, angle);
+    var swerveModuleState = new SwerveModuleState(0.0, angle);
     
-    m_frontLeft.setTurnDesiredState(swerveModuleState);
-    m_frontRight.setTurnDesiredState(swerveModuleState);
-    m_rearLeft.setTurnDesiredState(swerveModuleState);
-    m_rearRight.setTurnDesiredState(swerveModuleState);
+    m_frontLeft.setDesiredState(swerveModuleState);
+    m_frontRight.setDesiredState(swerveModuleState);
+    m_rearLeft.setDesiredState(swerveModuleState);
+    m_rearRight.setDesiredState(swerveModuleState);
   }
 
   public void simpleturningO() {
@@ -224,10 +221,10 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     
-    m_frontLeft.setTurnDesiredState(swerveModuleState1);
-    m_frontRight.setTurnDesiredState(swerveModuleState2);
-    m_rearLeft.setTurnDesiredState(swerveModuleState2);
-    m_rearRight.setTurnDesiredState(swerveModuleState1);
+    m_frontLeft.setDesiredState(swerveModuleState1);
+    m_frontRight.setDesiredState(swerveModuleState2);
+    m_rearLeft.setDesiredState(swerveModuleState2);
+    m_rearRight.setDesiredState(swerveModuleState1);
   }
   public void simpleturningX() {
     
@@ -238,10 +235,10 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     
-    m_frontLeft.setTurnDesiredState(swerveModuleState2);
-    m_frontRight.setTurnDesiredState(swerveModuleState1);
-    m_rearLeft.setTurnDesiredState(swerveModuleState1);
-    m_rearRight.setTurnDesiredState(swerveModuleState2);
+    m_frontLeft.setDesiredState(swerveModuleState2);
+    m_frontRight.setDesiredState(swerveModuleState1);
+    m_rearLeft.setDesiredState(swerveModuleState1);
+    m_rearRight.setDesiredState(swerveModuleState2);
   }
 
   /**
