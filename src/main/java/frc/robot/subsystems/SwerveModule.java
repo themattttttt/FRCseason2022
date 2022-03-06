@@ -65,9 +65,15 @@ public class SwerveModule {
     double current_reading = m_turningEncoder.getAbsolutePosition();
     double diff = current_reading-turningEncoderOffset;
     //Before the game start, the team should manally calibrate the wheels. Theoratically the diff should be within -60 and 60 in degrees
+    /**
+     * A full rotation of the wheel results in 8/3 rotations of the encoder cylinder (gear ratio 8:3)
+     * Absolute reading of the encoder is in range [0,360)
+     * A quick example here: if the wheel rotates 1 full circle, the encoder read will change by 8/3 circles, which is +2/3*360 or -1/3*360 in absolute value
+     * in short, the increment of absolute value can only be 0, 120 or 240.
+     */
     diff = (diff+120) % 120;
     if(diff > 60){
-      diff = 60-diff;
+      diff = 120-diff;
     }
     //m_turningEncoder.setPosition(diff);
 
