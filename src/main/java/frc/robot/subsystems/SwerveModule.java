@@ -139,7 +139,7 @@ public class SwerveModule {
     setDriveDesiredState(desiredState);
   }
 
-  public void setTurnDesiredState(SwerveModuleState desiredState) {
+  private void setTurnDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
@@ -160,7 +160,7 @@ public class SwerveModule {
     return angle/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
   }
 
-  public void setDriveDesiredState(SwerveModuleState desiredState) {
+  private void setDriveDesiredState(SwerveModuleState desiredState) {
     double driveOutput = desiredState.speedMetersPerSecond;
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
