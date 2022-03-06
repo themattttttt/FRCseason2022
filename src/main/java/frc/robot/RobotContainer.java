@@ -134,9 +134,9 @@ public class RobotContainer {
   public Command getParallelMoveCommand(){
       Command MoveCommand = new RunCommand(
           () ->
-          m_robotDrive.drivestraight(m_driverController.getLeftX(), m_driverController.getLeftY()),
+          m_robotDrive.drivestraight(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
           m_robotDrive);
        // Run parallel moving, then stop at the end.
-      return MoveCommand.andThen(()->m_robotDrive.drivestraight(0));
+      return MoveCommand;
   }
 }
