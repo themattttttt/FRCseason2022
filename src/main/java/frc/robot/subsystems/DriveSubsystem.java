@@ -20,6 +20,7 @@ import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.ModuleConstants;
+import java.util.List;
 
 public class DriveSubsystem extends SubsystemBase {
   // Robot swerve modules
@@ -347,5 +348,10 @@ public class DriveSubsystem extends SubsystemBase {
     turning_config.slot0.kD=kD;
     turning_config.slot0.kF=kF;
     return turning_config;
+  }
+
+  public SwerveModuleState[] getModuleStates(){
+    SwerveModuleState[] stateArray = {m_rearLeft.getState(), m_frontLeft.getState(),m_frontRight.getState(),m_rearRight.getState()};
+    return stateArray;
   }
 }
