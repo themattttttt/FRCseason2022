@@ -56,10 +56,22 @@ public class SwerveModule {
     TalonFXConfiguration drive_config,
     TalonSRXConfiguration turn_config,
     boolean driveEncoderReversed,
-    boolean turnEncoderReversed) {
+    double turningEncoderOffset ) {
     this.m_driveMotor = new TalonFX(driveMotorChannel);
     this.m_turningMotor = new TalonSRX(turningMotorChannel);
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
+
+    //reset CANCoder read offset
+    double current_reading = m_turningEncoder.getAbsolutePosition();
+    double diff = current_reading-turningEncoderOffset;
+    //Before the game start, the team should manally calibrate the wheels. Theoratically the diff should be within -60 and 60 in degrees
+    diff = (diff+120) % 120;
+    if(diff > 60){
+      diff = 60-diff;
+    }
+    //m_turningEncoder.setPosition(diff);
+
+
     //config common settings
     this.m_turningMotor.clearStickyFaults();
     this.m_turningEncoder.clearStickyFaults();
@@ -134,17 +146,15 @@ public class SwerveModule {
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    setTurnDesiredState(desiredState);
-    setDriveDesiredState(desiredState);
-  }
-
-  private void setTurnDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
-    // Calculate the turning motor output from the turning PID controller.
-    //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = getEncoderUnitFromDegrees(state.angle.getDegrees());
+    setTurnDesiredState(state);
+    setDriveDesiredState(state);
+  }
+
+  private void setTurnDesiredState(SwerveModuleState desiredState) {
+    double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 

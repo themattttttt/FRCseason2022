@@ -37,7 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
                        PIDConfigConstants.kdFrontLeftTurn, 
                        PIDConfigConstants.kfFrontLeftTurn),
           DriveConstants.kFrontLeftDriveEncoderReversed,
-          DriveConstants.kFrontLeftTurningEncoderReversed
+          DriveConstants.kFrontLeftTurningEncoderOffset
           );
 
   private final SwerveModule m_rearLeft =
@@ -54,7 +54,7 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdRearLeftTurn, 
                      PIDConfigConstants.kfRearLeftTurn),
         DriveConstants.kRearLeftDriveEncoderReversed,
-        DriveConstants.kRearLeftTurningEncoderReversed
+        DriveConstants.kRearLeftTurningEncoderOffset
       );
 
   private final SwerveModule m_frontRight =
@@ -71,7 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdFrontRightTurn, 
                      PIDConfigConstants.kfFrontRightTurn),
         DriveConstants.kFrontRightDriveEncoderReversed,
-        DriveConstants.kFrontRightTurningEncoderReversed);
+        DriveConstants.kFrontRightTurningEncoderOffset
+      );
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
@@ -87,7 +88,8 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdRearRightTurn, 
                      PIDConfigConstants.kfRearRightTurn),
         DriveConstants.kRearRightDriveEncoderReversed,
-        DriveConstants.kRearRightTurningEncoderReversed);
+        DriveConstants.kRearRightTurningEncoderOffset
+        );
   
   //set module angle at degrees
   private double m_setAngle = 0.0;
