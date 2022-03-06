@@ -135,13 +135,8 @@ public class SwerveModule {
    * @param desiredState Desired state with speed and angle.
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-    // Calculate the turning motor output from the turning PID controller.
-    //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = desiredState.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
-    m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
+    setTurnDesiredState(desiredState);
+    setDriveDesiredState(desiredState);
   }
 
   public void setTurnDesiredState(SwerveModuleState desiredState) {
