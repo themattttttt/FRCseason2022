@@ -76,42 +76,42 @@ public final class Constants {
     public static final double kpRearLeftDrive = 0.0;
     public static final double kiRearLeftDrive = 0.0;
     public static final double kdRearLeftDrive = 0.0;
-    public static final double kfRearLeftDrive = 0.0;
+    public static final double kfRearLeftDrive = 0.046;
 
     public static final double kpRearLeftTurn = 0.0;
     public static final double kiRearLeftTurn = 0.0;
     public static final double kdRearLeftTurn = 0.0;
-    public static final double kfRearLeftTurn = 0.0;
+    public static final double kfRearLeftTurn = 0.13;
 
     public static final double kpFrontLeftDrive = 0.0;
     public static final double kiFrontLeftDrive = 0.0;
     public static final double kdFrontLeftDrive = 0.0;
-    public static final double kfFrontLeftDrive = 0.0;
+    public static final double kfFrontLeftDrive = 0.046;
 
     public static final double kpFrontLeftTurn = 0.0;
     public static final double kiFrontLeftTurn = 0.0;
     public static final double kdFrontLeftTurn = 0.0;
-    public static final double kfFrontLeftTurn = 0.0;
+    public static final double kfFrontLeftTurn = 0.13;
 
     public static final double kpFrontRightDrive = 0.0;
     public static final double kiFrontRightDrive = 0.0;
     public static final double kdFrontRightDrive = 0.0;
-    public static final double kfFrontRightDrive = 0.0;
+    public static final double kfFrontRightDrive = 0.046;
 
     public static final double kpFrontRightTurn = 0.0;
     public static final double kiFrontRightTurn = 0.0;
     public static final double kdFrontRightTurn = 0.0;
-    public static final double kfFrontRightTurn = 0.0;
+    public static final double kfFrontRightTurn = 0.13;
     
     public static final double kpRearRightDrive = 0.0;
     public static final double kiRearRightDrive = 0.0;
     public static final double kdRearRightDrive = 0.0;
-    public static final double kfRearRightDrive = 0.0;
+    public static final double kfRearRightDrive = 0.046;
 
     public static final double kpRearRightTurn = 0.0;
     public static final double kiRearRightTurn = 0.0;
     public static final double kdRearRightTurn = 0.0;
-    public static final double kfRearRightTurn = 0.0;
+    public static final double kfRearRightTurn = 0.13;
 
     
     
@@ -142,6 +142,9 @@ public final class Constants {
 
     public static final double kTurningMax=4096/2*8/3;
     public static final double kPeakOutput=0.8;
+
+    public static final double kTurnToleranceUnit = 50;
+    public static final double kDriveToleranceUnit = 50;
   }
 
   public static final class OIConstants {

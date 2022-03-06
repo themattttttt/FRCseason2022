@@ -137,6 +137,6 @@ public class RobotContainer {
           m_robotDrive.drivestraight(m_driverController.getLeftX(), m_driverController.getLeftY()),
           m_robotDrive);
        // Run parallel moving, then stop at the end.
-      return MoveCommand.andThen(()->m_robotDrive.drivestraight(0, 0));
+      return MoveCommand.andThen(()->m_robotDrive.drivestraight(0));
   }
 }
