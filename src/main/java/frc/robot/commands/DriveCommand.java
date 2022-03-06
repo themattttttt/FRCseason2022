@@ -3,8 +3,7 @@ package frc.robot.commands;
 //import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-//import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.DriveConstants;
 
 
 /** A command that will drive the chasis with a fixed angle */
@@ -20,8 +19,15 @@ public class DriveCommand extends CommandBase {
   public DriveCommand(double xSpeed,double ySpeed, DriveSubsystem drive) {
     m_drive = drive;
     addRequirements(m_drive);
-    m_speed = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
+    m_speed = DriveConstants.kMaxSpeedMetersPerSecond* Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
   }
+
+  public DriveCommand(double Speed, DriveSubsystem drive) {
+    m_drive = drive;
+    addRequirements(m_drive);
+    m_speed = DriveConstants.kMaxSpeedMetersPerSecond*Speed;
+  }
+
 
   @Override
   public void execute(){
