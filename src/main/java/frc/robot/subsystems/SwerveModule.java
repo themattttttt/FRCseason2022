@@ -45,7 +45,7 @@ public class SwerveModule {
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(m_turningEncoder.getPosition()));
+    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
   }
 
 
@@ -60,7 +60,6 @@ public class SwerveModule {
     this.m_driveMotor = new TalonFX(driveMotorChannel);
     this.m_turningMotor = new TalonSRX(turningMotorChannel);
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
-
     //config common settings
     this.m_turningMotor.clearStickyFaults();
     this.m_turningEncoder.clearStickyFaults();
@@ -142,10 +141,10 @@ public class SwerveModule {
   private void setTurnDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
+        SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
     // Calculate the turning motor output from the turning PID controller.
     //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
+    double turnOutput = getEncoderUnitFromDegrees(state.angle.getDegrees());
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
@@ -178,7 +177,7 @@ public class SwerveModule {
    * @param setAngle angle in degress
   */
   public boolean atSetAngle(double setAngle){
-    double diff = Math.abs(m_turningEncoder.getPosition()-getEncoderUnitFromDegrees(setAngle));
-    return diff < ModuleConstants.kTurnToleranceUnit;
+    double diff = Math.abs(m_turningEncoder.getPosition()-setAngle);
+    return diff < ModuleConstants.kTurnToleranceDeg;
   }
 }

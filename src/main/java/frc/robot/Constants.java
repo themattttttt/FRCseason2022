@@ -144,6 +144,7 @@ public final class Constants {
     public static final double kPeakOutput=0.8;
 
     public static final double kTurnToleranceUnit = 50;
+    public static final double kTurnToleranceDeg = 1.0;
     public static final double kDriveToleranceUnit = 50;
   }
 

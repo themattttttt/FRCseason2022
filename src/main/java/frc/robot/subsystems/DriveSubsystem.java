@@ -137,6 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, new Rotation2d());
+    m_setAngle = 0.0;
   }
 
   /**
@@ -213,13 +214,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void simpleturningO() {
-    
-    
     var angle1 = new Rotation2d(1.0,1.0);
     var swerveModuleState1 = new SwerveModuleState(0, angle1);
     var angle2 = new Rotation2d(-1.0,1.0);
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
-    
     
     m_frontLeft.setDesiredState(swerveModuleState1);
     m_frontRight.setDesiredState(swerveModuleState2);
@@ -227,13 +225,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleState1);
   }
   public void simpleturningX() {
-    
-    
     var angle1 = new Rotation2d(1.0,1.0);
     var swerveModuleState1 = new SwerveModuleState(0, angle1);
     var angle2 = new Rotation2d(-1.0,1.0);
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
-    
     
     m_frontLeft.setDesiredState(swerveModuleState2);
     m_frontRight.setDesiredState(swerveModuleState1);

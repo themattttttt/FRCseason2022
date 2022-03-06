@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ModuleConstants;
 
 
-/** A command that will turn the robot to the specified angle. */
+/** A command that will drive the chasis with a fixed angle */
 public class DriveCommand extends CommandBase {
   private final DriveSubsystem m_drive;
   private final double m_speed;
