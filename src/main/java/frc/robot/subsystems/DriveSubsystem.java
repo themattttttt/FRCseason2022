@@ -19,6 +19,7 @@ import frc.robot.Constants.DriveConstants;
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.ModuleConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   // Robot swerve modules
@@ -87,7 +88,9 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kfRearRightTurn),
         DriveConstants.kRearRightDriveEncoderReversed,
         DriveConstants.kRearRightTurningEncoderReversed);
-
+  
+  //set module angle at degrees
+  private double m_setAngle = 0.0;
   // The gyro sensor
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
@@ -117,6 +120,14 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  public double getCurrentAngle(){
+    return m_setAngle;
+  }
+
+  public void setCurrentAngle(double angle){
+    m_setAngle = angle;
   }
 
   /**
@@ -152,48 +163,46 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
   
-    /**
-   * Method to drive straight the robot using joystick info.
-   *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   * @param rot Angular rate of the robot.
+  /**
+   * 
+   * @param Speed
    */
   @SuppressWarnings("ParameterName")
-  public void drivestraight(double xSpeed, double ySpeed) {
-    if(xSpeed < JoystickConstants.kReadEpsilon){
-      xSpeed = 0.0;
+  public void drivestraight(double Speed) {
+
+    if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
+      Speed = DriveConstants.kMaxSpeedMetersPerSecond;
     }
-    if(ySpeed < JoystickConstants.kReadEpsilon){
-      ySpeed = 0.0;
-    }
-    double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
-      return;
-    }
-    if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
-      speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
-    }
-    var angle = new Rotation2d(xSpeed,ySpeed);
-    var swerveModuleState = new SwerveModuleState(speedMetersPerSecond,angle);
+
+    var angle = new Rotation2d(Math.toRadians(m_setAngle));
+    var swerveModuleState = new SwerveModuleState(Speed,angle);
     
     m_frontLeft.setDriveDesiredState(swerveModuleState);
     m_frontRight.setDriveDesiredState(swerveModuleState);
     m_rearLeft.setDriveDesiredState(swerveModuleState);
     m_rearRight.setDriveDesiredState(swerveModuleState);
   }
+
+  /**
+   * Method to drive straight the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   */
+  @SuppressWarnings("ParameterName")
+  public void drivestraight(double xSpeed, double ySpeed) {
+    double Speed = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
+    drivestraight(Speed);
+  }
   
   public void driveturning(double xSpeed, double ySpeed) {
-    if(xSpeed < JoystickConstants.kReadEpsilon){
+    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
       xSpeed = 0.0;
     }
-    if(ySpeed < JoystickConstants.kReadEpsilon){
+    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
       ySpeed = 0.0;
     }
     double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
-      return;
-    }
     if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
       speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
     }
@@ -281,6 +290,52 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     //return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     return 0.0;
+  }
+
+  /**Check if all four modules reaches desired angle
+   * 
+   * @param setAngle in degrees
+   * @return
+   */
+  public boolean getModulesAtAngle(double setAngle){
+    if (!m_frontLeft.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_frontRight.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_rearLeft.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_rearRight.atSetAngle(setAngle)){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  /**
+   * 
+   * @param velocity
+   * @return
+   */
+  public boolean getModulesAtSpeed(double velocity){
+    if(Math.abs(m_rearRight.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_rearLeft.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_frontLeft.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_frontRight.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   public static TalonFXConfiguration getDrivePIDconfig(double kP, double kI, double kD, double kF){

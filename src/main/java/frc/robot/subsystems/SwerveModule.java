@@ -70,6 +70,8 @@ public class SwerveModule {
     drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
     drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
 
+    //config common motor settings
+
     m_driveMotor.configAllSettings(drive_config);
     m_driveMotor.setSensorPhase(true);
     m_driveMotor.setInverted(driveEncoderReversed);
@@ -91,6 +93,7 @@ public class SwerveModule {
     turn_config.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
     turn_config.slot0.closedLoopPeriod = 1;
     //For integrals, integrate errors out of the zone and accumulate until the max
+    turn_config.slot0.allowableClosedloopError = 50;
     turn_config.slot0.integralZone = 100;
     turn_config.slot0.maxIntegralAccumulator = 1000;
 
@@ -118,18 +121,11 @@ public class SwerveModule {
 
     //Set neutral mode to brake to self lock the motor when power on
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
-    
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
-    //m_turningMotor.setInverted(turningEncoderReversed);
 
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-		
-
-    //config common motor settings
-
-
     }
 
 
@@ -144,7 +140,7 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
     // Calculate the turning motor output from the turning PID controller.
     //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+    double turnOutput = desiredState.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
@@ -154,15 +150,23 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
     // Calculate the turning motor output from the turning PID controller.
     //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+    double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
+
+  /** get encoder units from degress
+   * 
+   * @param angle in degrees
+   * @return encoder units
+   */
+  public double getEncoderUnitFromDegrees(double angle)
+  {
+    return angle/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+  }
+
   public void setDriveDesiredState(SwerveModuleState desiredState) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-    double driveOutput = state.speedMetersPerSecond;
+    double driveOutput = desiredState.speedMetersPerSecond;
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
@@ -172,5 +176,14 @@ public class SwerveModule {
     m_turningEncoder.clearStickyFaults();
     m_driveMotor.clearStickyFaults();
     m_turningMotor.clearStickyFaults();
+  }
+
+  
+  /**check if the turing motor reaches the desired angle
+   * @param setAngle angle in degress
+  */
+  public boolean atSetAngle(double setAngle){
+    double diff = Math.abs(m_turningEncoder.getPosition()-getEncoderUnitFromDegrees(setAngle));
+    return diff < ModuleConstants.kTurnToleranceUnit;
   }
 }
