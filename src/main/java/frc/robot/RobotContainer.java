@@ -135,7 +135,9 @@ public class RobotContainer {
       Command MoveCommand = new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
 
       Command turnCommand = new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
-       // Run parallel moving, then stop at the end.
+      // Run parallel moving, then stop at the end.
+      System.out.print("\n command finished? \n");
+      System.out.print(turnCommand.isFinished());
       return turnCommand.andThen(MoveCommand);
   }
 }
