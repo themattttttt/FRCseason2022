@@ -132,11 +132,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getParallelMoveCommand(){
-      Command MoveCommand = new RunCommand(
-          () ->
-          m_robotDrive.drivestraight(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
-          m_robotDrive);
+      Command MoveCommand = new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
+
+      Command turnCommand = new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
        // Run parallel moving, then stop at the end.
-      return MoveCommand;
+      return turnCommand.andThen(MoveCommand);
   }
 }
