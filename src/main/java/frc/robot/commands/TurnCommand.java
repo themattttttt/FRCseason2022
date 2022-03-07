@@ -6,6 +6,7 @@ import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.JoystickConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -26,6 +27,12 @@ public class TurnCommand extends CommandBase {
   public TurnCommand(double xSpeed, double ySpeed, DriveSubsystem drive) {
     m_drive = drive;
     addRequirements(m_drive);
+    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
+      xSpeed = 0.0;
+    }
+    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
+      ySpeed = 0.0;
+    }
     m_xSpeed = xSpeed;
     m_ySpeed = ySpeed;
     m_degree = new Rotation2d(xSpeed,ySpeed).getDegrees();
@@ -52,13 +59,15 @@ public class TurnCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_drive.driveturning(m_xSpeed, m_ySpeed);
     SmartDashboard.putNumber("Set Angle", m_degree);
     SmartDashboard.putNumber("Swerve 1 Angle", m_drive.getModuleStates()[0].angle.getDegrees());
     SmartDashboard.putNumber("Swerve 2 Angle", m_drive.getModuleStates()[1].angle.getDegrees());
     SmartDashboard.putNumber("Swerve 3 Angle", m_drive.getModuleStates()[2].angle.getDegrees());
     SmartDashboard.putNumber("Swerve 4 Angle", m_drive.getModuleStates()[3].angle.getDegrees());
     SmartDashboard.putBoolean("Angle reached", isFinished());
+    SmartDashboard.putNumber("x value", m_xSpeed);
+    SmartDashboard.putNumber("y value", m_ySpeed);
+    m_drive.driveturning(m_xSpeed, m_ySpeed);
   }
 
   @Override
