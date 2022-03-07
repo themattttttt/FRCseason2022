@@ -59,6 +59,8 @@ public class TurnCommand extends CommandBase {
     SmartDashboard.putNumber("Swerve 3 Angle", m_drive.getModuleStates()[2].angle.getDegrees());
     SmartDashboard.putNumber("Swerve 4 Angle", m_drive.getModuleStates()[3].angle.getDegrees());
     SmartDashboard.putBoolean("Angle reached", isFinished());
+    SmartDashboard.putNumber("x value", m_xSpeed);
+    SmartDashboard.putNumber("y value", m_ySpeed);
   }
 
   @Override

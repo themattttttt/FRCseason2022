@@ -141,6 +141,7 @@ public class SwerveModule {
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
+    m_turningMotor.setInverted(true);
 
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
     }
