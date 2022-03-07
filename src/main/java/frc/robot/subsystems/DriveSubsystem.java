@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Constants.DriveConstants;
@@ -293,6 +294,10 @@ public class DriveSubsystem extends SubsystemBase {
    * @return
    */
   public boolean getModulesAtAngle(double setAngle){
+    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle(setAngle));
     if (!m_frontLeft.atSetAngle(setAngle)){
       return false;
     }

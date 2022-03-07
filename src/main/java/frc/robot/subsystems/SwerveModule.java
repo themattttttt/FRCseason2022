@@ -17,6 +17,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorTimeBase;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 //import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -76,6 +78,7 @@ public class SwerveModule {
       diff = 120-diff;
     }
     //m_turningEncoder.setPosition(diff);
+    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.Per100Ms_Legacy);
 
 
     //config common settings
@@ -172,7 +175,7 @@ public class SwerveModule {
    */
   public double getEncoderUnitFromDegrees(double angle)
   {
-    return angle/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+    return angle/m_turningEncoder.configGetFeedbackCoefficient();
   }
 
   private void setDriveDesiredState(SwerveModuleState desiredState) {
