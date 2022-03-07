@@ -67,10 +67,11 @@ public class RobotContainer {
     // Configure default commands
     
     m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        
-        new DriveCommand(0,0,m_robotDrive).andThen(new TurnCommand(0,1, m_robotDrive))
+        // Run parallel moving, then stop at the end.
+        new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive).
+        andThen(new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive))
+        //return new RunCommand(m_robotDrive.drive(-m_driverController.getLeftY(),-m_driverController.getLeftX(),0.0,false)
+        //    , m_robotDrive);
     );
   }
 
@@ -138,20 +139,5 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-  }
-  /**
-   * Use this to use joystick to control
-   *
-   * 
-   * @return the command to run in autonomous
-   */
-  public Command getParallelMoveCommand(){
-      Command MoveCommand = new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
-
-      Command turnCommand = new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive);
-      // Run parallel moving, then stop at the end.
-      return turnCommand.andThen(MoveCommand);
-      //return new RunCommand(m_robotDrive.drive(-m_driverController.getLeftY(),-m_driverController.getLeftX(),0.0,false)
-      //    , m_robotDrive);
   }
 }
