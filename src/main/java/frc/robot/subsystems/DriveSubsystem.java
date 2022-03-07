@@ -188,17 +188,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleState);
   }
 
-  /**
-   * Method to drive straight the robot using joystick info.
-   *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   */
-  @SuppressWarnings("ParameterName")
-  public void drivestraight(double xSpeed, double ySpeed) {
-    double Speed = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    drivestraight(Speed);
-  }
+
   
   public void driveturning(double xSpeed, double ySpeed) {
     if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){

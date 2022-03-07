@@ -26,6 +26,12 @@ public class DriveCommand extends CommandBase {
   public DriveCommand(double Speed, DriveSubsystem drive) {
     m_drive = drive;
     addRequirements(m_drive);
+    if(Speed > 1.0){
+      Speed = 1.0;
+    }
+    else if (Speed<-1.0){
+      Speed = -1.0;
+    }
     m_speed = DriveConstants.kMaxSpeedMetersPerSecond*Speed;
   }
 

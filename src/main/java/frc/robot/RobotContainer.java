@@ -86,8 +86,8 @@ public class RobotContainer {
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
       rightButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       leftButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      forwardButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      backwardButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      forwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
+      backwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
       startButton.whenHeld(new TurnCommand(0, m_robotDrive));
   }
 
