@@ -153,7 +153,7 @@ public final class Constants {
     public static final double kTurnToleranceDeg = 1.0;
     public static final double kDriveToleranceUnit = 50;
 
-    public static final double kCANCoderCoefficient = 360/4096*8/3;
+    public static final double kCANCoderCoefficient = 360/4096*3/8;
   }
 
   public static final class OIConstants {
