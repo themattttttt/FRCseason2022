@@ -33,6 +33,8 @@ public class SwerveModule {
 
   private final CANCoder m_turningEncoder;
 
+  private double m_setAngle = 0.0;
+
   /**
    * Constructs a SwerveModule.
    *
@@ -160,7 +162,7 @@ public class SwerveModule {
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
     setTurnDesiredState(state);
-    setDriveDesiredState(state);
+    setDesiredSpeed(desiredState.speedMetersPerSecond);
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
@@ -179,8 +181,7 @@ public class SwerveModule {
     return angle/m_turningEncoder.configGetFeedbackCoefficient();
   }
 
-  private void setDriveDesiredState(SwerveModuleState desiredState) {
-    double driveOutput = desiredState.speedMetersPerSecond;
+  public void setDesiredSpeed(double driveOutput) {
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
@@ -196,8 +197,14 @@ public class SwerveModule {
   /**check if the turing motor reaches the desired angle
    * @param setAngle angle in degress
   */
-  public boolean atSetAngle(double setAngle){
-    double diff = Math.abs(m_turningEncoder.getPosition()-setAngle);
+  public boolean atSetAngle(){
+    double diff = Math.abs(m_turningEncoder.getPosition()-m_setAngle);
     return diff < ModuleConstants.kTurnToleranceDeg;
+  }
+  public void setAngle(double setAngle){
+    m_setAngle = setAngle;
+  }
+  public double getSetAngle(){
+    return m_setAngle;
   }
 }

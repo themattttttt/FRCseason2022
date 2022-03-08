@@ -92,9 +92,6 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.kRearRightDriveEncoderReversed,
         DriveConstants.kRearRightTurningEncoderOffset
         );
-  
-  //set module angle at degrees
-  private double m_setAngle = 0.0;
   // The gyro sensor
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
@@ -126,12 +123,11 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public double getCurrentAngle(){
-    return m_setAngle;
-  }
-
   public void setCurrentAngle(double angle){
-    m_setAngle = angle;
+    m_frontLeft.setAngle(angle);
+    m_frontRight.setAngle(angle);
+    m_rearLeft.setAngle(angle);
+    m_rearRight.setAngle(angle);
   }
 
   /**
@@ -141,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, new Rotation2d());
-    m_setAngle = 0.0;
+    setCurrentAngle(0.0);
   }
 
   /**
@@ -174,18 +170,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drivestraight(double Speed) {
-
     if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
       Speed = DriveConstants.kMaxSpeedMetersPerSecond;
     }
-
-    var angle = new Rotation2d(Math.toRadians(m_setAngle));
-    var swerveModuleState = new SwerveModuleState(Speed,angle);
-    
-    m_frontLeft.setDesiredState(swerveModuleState);
-    m_frontRight.setDesiredState(swerveModuleState);
-    m_rearLeft.setDesiredState(swerveModuleState);
-    m_rearRight.setDesiredState(swerveModuleState);
+    m_frontLeft.setDesiredSpeed(Speed);
+    m_frontRight.setDesiredSpeed(Speed);
+    m_rearLeft.setDesiredSpeed(Speed);
+    m_rearRight.setDesiredSpeed(Speed);
   }
 
 
@@ -283,21 +274,21 @@ public class DriveSubsystem extends SubsystemBase {
    * @param setAngle in degrees
    * @return
    */
-  public boolean getModulesAtAngle(double setAngle){
-    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle(setAngle));
-    if (!m_frontLeft.atSetAngle(setAngle)){
+  public boolean getModulesAtAngle(){
+    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle());
+    if (!m_frontLeft.atSetAngle()){
       return false;
     }
-    else if (!m_frontRight.atSetAngle(setAngle)){
+    else if (!m_frontRight.atSetAngle()){
       return false;
     }
-    else if (!m_rearLeft.atSetAngle(setAngle)){
+    else if (!m_rearLeft.atSetAngle()){
       return false;
     }
-    else if (!m_rearRight.atSetAngle(setAngle)){
+    else if (!m_rearRight.atSetAngle()){
       return false;
     }
     else{

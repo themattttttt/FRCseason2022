@@ -68,10 +68,8 @@ public class RobotContainer {
     
     m_robotDrive.setDefaultCommand(
         // Run parallel moving, then stop at the end.
-        new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive).
-        andThen(new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive))
-        //return new RunCommand(m_robotDrive.drive(-m_driverController.getLeftY(),-m_driverController.getLeftX(),0.0,false)
-        //    , m_robotDrive);
+        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),0.0,false)
+            , m_robotDrive)
     );
   }
 
@@ -84,10 +82,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
-      rightButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      leftButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      forwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
-      backwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
+      rightButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      leftButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      backwardButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       startButton.whenHeld(new TurnCommand(0, m_robotDrive));
   }
 
