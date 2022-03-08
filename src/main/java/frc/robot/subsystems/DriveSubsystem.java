@@ -275,10 +275,10 @@ public class DriveSubsystem extends SubsystemBase {
    * @return
    */
   public boolean getModulesAtAngle(){
-    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 1 Angle State", m_rearLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 2 Angle State", m_frontLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 3 Angle State", m_frontRight.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 4 Angle State", m_rearRight.atSetAngle());
     if (!m_frontLeft.atSetAngle()){
       return false;
     }
