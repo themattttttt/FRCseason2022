@@ -90,10 +90,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_teleopCommand = m_robotContainer.getParallelMoveCommand();
-    if (m_teleopCommand != null){
-      m_teleopCommand.schedule();
-    }
+    
   }
 
   @Override

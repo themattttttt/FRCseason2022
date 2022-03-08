@@ -17,6 +17,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorTimeBase;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 //import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -45,7 +47,7 @@ public class SwerveModule {
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(m_turningEncoder.getPosition()));
+    return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
   }
 
 
@@ -56,10 +58,28 @@ public class SwerveModule {
     TalonFXConfiguration drive_config,
     TalonSRXConfiguration turn_config,
     boolean driveEncoderReversed,
-    boolean turnEncoderReversed) {
+    double turningEncoderOffset ) {
     this.m_driveMotor = new TalonFX(driveMotorChannel);
     this.m_turningMotor = new TalonSRX(turningMotorChannel);
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
+
+    //reset CANCoder read offset
+    double current_reading = m_turningEncoder.getAbsolutePosition();
+    double diff = current_reading-turningEncoderOffset;
+    //Before the game start, the team should manally calibrate the wheels. Theoratically the diff should be within -60 and 60 in degrees
+    /**
+     * A full rotation of the wheel results in 8/3 rotations of the encoder cylinder (gear ratio 8:3)
+     * Absolute reading of the encoder is in range [0,360)
+     * A quick example here: if the wheel rotates 1 full circle, the encoder read will change by 8/3 circles, which is +2/3*360 or -1/3*360 in absolute value
+     * in short, the increment of absolute value can only be 0, 120 or 240.
+     */
+    diff = (diff+120) % 120;
+    if(diff > 60){
+      diff = 120-diff;
+    }
+    //m_turningEncoder.setPosition(diff);
+    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.Per100Ms_Legacy);
+
 
     //config common settings
     this.m_turningMotor.clearStickyFaults();
@@ -70,17 +90,9 @@ public class SwerveModule {
     drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
     drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
 
+    //config common motor settings
 
-    //For driving motor, use Falcon integrated sensor as PID controller
-    //set drving motor profiles
-    TalonFXConfiguration talon_configs = new TalonFXConfiguration();
-		/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-		talon_configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-    talon_configs.diff0Term = FeedbackDevice.IntegratedSensor;
-    talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
-      
-		/* config all the settings */
-		//m_driveMotor.configAllSettings(talon_configs);
+    m_driveMotor.configAllSettings(drive_config);
     m_driveMotor.setSensorPhase(true);
     m_driveMotor.setInverted(driveEncoderReversed);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
@@ -101,6 +113,7 @@ public class SwerveModule {
     turn_config.slot0.closedLoopPeakOutput = ModuleConstants.kPeakOutput;
     turn_config.slot0.closedLoopPeriod = 1;
     //For integrals, integrate errors out of the zone and accumulate until the max
+    turn_config.slot0.allowableClosedloopError = 50;
     turn_config.slot0.integralZone = 100;
     turn_config.slot0.maxIntegralAccumulator = 1000;
 
@@ -120,7 +133,7 @@ public class SwerveModule {
     turn_config.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
 
     //set configs
-    //m_turningMotor.configAllSettings(turning_configs);
+    m_turningMotor.configAllSettings(turn_config);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
 		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
@@ -128,18 +141,12 @@ public class SwerveModule {
 
     //Set neutral mode to brake to self lock the motor when power on
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
-    
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
-    //m_turningMotor.setInverted(turningEncoderReversed);
+    m_turningMotor.setInverted(true);
 
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-		
-
-    //config common motor settings
-
-
     }
 
 
@@ -151,29 +158,29 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-    // Calculate the turning motor output from the turning PID controller.
-    //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = desiredState.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
-    m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
-    m_driveMotor.set(ControlMode.Velocity, desiredState.speedMetersPerSecond*4000);
+        SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
+    setTurnDesiredState(state);
+    setDriveDesiredState(state);
   }
 
-  public void setTurnDesiredState(SwerveModuleState desiredState) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-    // Calculate the turning motor output from the turning PID controller.
-    //use raw readings and multiply by the ratio to get the actual turnning of the gear
-    double turnOutput = state.angle.getDegrees()/m_turningEncoder.configGetFeedbackCoefficient()*8/3;
+  private void setTurnDesiredState(SwerveModuleState desiredState) {
+    double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
-  public void setDriveDesiredState(SwerveModuleState desiredState) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
-    double driveOutput = state.speedMetersPerSecond;
+
+  /** get encoder units from degress
+   * 
+   * @param angle in degrees
+   * @return encoder units
+   */
+  public double getEncoderUnitFromDegrees(double angle)
+  {
+    return angle/m_turningEncoder.configGetFeedbackCoefficient();
+  }
+
+  private void setDriveDesiredState(SwerveModuleState desiredState) {
+    double driveOutput = desiredState.speedMetersPerSecond;
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
@@ -183,5 +190,14 @@ public class SwerveModule {
     m_turningEncoder.clearStickyFaults();
     m_driveMotor.clearStickyFaults();
     m_turningMotor.clearStickyFaults();
+  }
+
+  
+  /**check if the turing motor reaches the desired angle
+   * @param setAngle angle in degress
+  */
+  public boolean atSetAngle(double setAngle){
+    double diff = Math.abs(m_turningEncoder.getPosition()-setAngle);
+    return diff < ModuleConstants.kTurnToleranceDeg;
   }
 }

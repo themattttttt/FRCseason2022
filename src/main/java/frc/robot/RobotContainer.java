@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -44,10 +45,16 @@ public class RobotContainer {
 
   // The driver's controller
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-
   private final JoystickButton XButton=new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
-
   private final JoystickButton OButton=new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
+  private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
+  private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+  private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
+  private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
+
+
+
 
 
 
@@ -60,10 +67,11 @@ public class RobotContainer {
     // Configure default commands
     
     m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        
-        new TurnCommand(0,0, m_robotDrive).andThen(new DriveCommand(0,0,m_robotDrive))
+        // Run parallel moving, then stop at the end.
+        new TurnCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive).
+        andThen(new DriveCommand(-m_driverController.getLeftY(),-m_driverController.getLeftX(),m_robotDrive))
+        //return new RunCommand(m_robotDrive.drive(-m_driverController.getLeftY(),-m_driverController.getLeftX(),0.0,false)
+        //    , m_robotDrive);
     );
   }
 
@@ -76,6 +84,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
+      rightButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      leftButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      forwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
+      backwardButton.whenHeld(new DriveCommand(1.0, m_robotDrive));
+      startButton.whenHeld(new TurnCommand(0, m_robotDrive));
   }
 
   /**
@@ -126,23 +139,5 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-  }
-  /**
-   * Use this to use joystick to control
-   *
-   * 
-   * @return the command to run in autonomous
-   */
-  public Command getParallelMoveCommand(){
-      Command MoveCommand = new RunCommand(
-          () ->
-          m_robotDrive.drivestraight(-m_driverController.getLeftY(), -m_driverController.getLeftX()),
-          m_robotDrive);
-       // Run parallel moving, then stop at the end.
-      return MoveCommand.andThen(()->m_robotDrive.drivestraight(0, 0));
-  }
-  public Command getTurnCommand(){
-      // turn 90 degrees
-      return new TurnCommand(0,1,m_robotDrive);
   }
 }

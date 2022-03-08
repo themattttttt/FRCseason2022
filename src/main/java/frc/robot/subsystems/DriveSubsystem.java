@@ -13,12 +13,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Constants.DriveConstants;
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.ModuleConstants;
+import java.util.List;
 
 public class DriveSubsystem extends SubsystemBase {
   // Robot swerve modules
@@ -36,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
                        PIDConfigConstants.kdFrontLeftTurn, 
                        PIDConfigConstants.kfFrontLeftTurn),
           DriveConstants.kFrontLeftDriveEncoderReversed,
-          DriveConstants.kFrontLeftTurningEncoderReversed
+          DriveConstants.kFrontLeftTurningEncoderOffset
           );
 
   private final SwerveModule m_rearLeft =
@@ -53,7 +56,7 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdRearLeftTurn, 
                      PIDConfigConstants.kfRearLeftTurn),
         DriveConstants.kRearLeftDriveEncoderReversed,
-        DriveConstants.kRearLeftTurningEncoderReversed
+        DriveConstants.kRearLeftTurningEncoderOffset
       );
 
   private final SwerveModule m_frontRight =
@@ -70,7 +73,8 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdFrontRightTurn, 
                      PIDConfigConstants.kfFrontRightTurn),
         DriveConstants.kFrontRightDriveEncoderReversed,
-        DriveConstants.kFrontRightTurningEncoderReversed);
+        DriveConstants.kFrontRightTurningEncoderOffset
+      );
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
@@ -86,8 +90,11 @@ public class DriveSubsystem extends SubsystemBase {
                      PIDConfigConstants.kdRearRightTurn, 
                      PIDConfigConstants.kfRearRightTurn),
         DriveConstants.kRearRightDriveEncoderReversed,
-        DriveConstants.kRearRightTurningEncoderReversed);
-
+        DriveConstants.kRearRightTurningEncoderOffset
+        );
+  
+  //set module angle at degrees
+  private double m_setAngle = 0.0;
   // The gyro sensor
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
@@ -119,6 +126,14 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public double getCurrentAngle(){
+    return m_setAngle;
+  }
+
+  public void setCurrentAngle(double angle){
+    m_setAngle = angle;
+  }
+
   /**
    * Resets the odometry to the specified pose.
    *
@@ -126,6 +141,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, new Rotation2d());
+    m_setAngle = 0.0;
   }
 
   /**
@@ -152,84 +168,66 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
   
-    /**
-   * Method to drive straight the robot using joystick info.
-   *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   * @param rot Angular rate of the robot.
+  /**
+   * 
+   * @param Speed
    */
   @SuppressWarnings("ParameterName")
-  public void drivestraight(double xSpeed, double ySpeed) {
+  public void drivestraight(double Speed) {
+
+    if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
+      Speed = DriveConstants.kMaxSpeedMetersPerSecond;
+    }
+
+    var angle = new Rotation2d(Math.toRadians(m_setAngle));
+    var swerveModuleState = new SwerveModuleState(Speed,angle);
+    
+    m_frontLeft.setDesiredState(swerveModuleState);
+    m_frontRight.setDesiredState(swerveModuleState);
+    m_rearLeft.setDesiredState(swerveModuleState);
+    m_rearRight.setDesiredState(swerveModuleState);
+  }
+
+
+  
+  public void driveturning(double xSpeed, double ySpeed) {
     if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
       xSpeed = 0.0;
     }
     if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
       ySpeed = 0.0;
     }
-    double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
-      speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
-    }
+
     var angle = new Rotation2d(xSpeed,ySpeed);
-    var swerveModuleState = new SwerveModuleState(speedMetersPerSecond,angle);
+    var swerveModuleState = new SwerveModuleState(0.0, angle);
     
-    m_frontLeft.setDriveDesiredState(swerveModuleState);
-    m_frontRight.setDriveDesiredState(swerveModuleState);
-    m_rearLeft.setDriveDesiredState(swerveModuleState);
-    m_rearRight.setDriveDesiredState(swerveModuleState);
-  }
-  
-  public void driveturning(double xSpeed, double ySpeed) {
-    if(xSpeed < JoystickConstants.kReadEpsilon){
-      xSpeed = 0.0;
-    }
-    if(ySpeed < JoystickConstants.kReadEpsilon){
-      ySpeed = 0.0;
-    }
-    double speedMetersPerSecond = Math.sqrt(Math.pow(xSpeed, 2)+Math.pow(ySpeed, 2));
-    if(speedMetersPerSecond < JoystickConstants.kReadEpsilon){
-      return;
-    }
-    if(speedMetersPerSecond > DriveConstants.kMaxSpeedMetersPerSecond){
-      speedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond;
-    }
-    var angle = new Rotation2d(xSpeed,ySpeed);
-    var swerveModuleState = new SwerveModuleState(speedMetersPerSecond, angle);
-    
-    m_frontLeft.setTurnDesiredState(swerveModuleState);
-    m_frontRight.setTurnDesiredState(swerveModuleState);
-    m_rearLeft.setTurnDesiredState(swerveModuleState);
-    m_rearRight.setTurnDesiredState(swerveModuleState);
+    m_frontLeft.setDesiredState(swerveModuleState);
+    m_frontRight.setDesiredState(swerveModuleState);
+    m_rearLeft.setDesiredState(swerveModuleState);
+    m_rearRight.setDesiredState(swerveModuleState);
   }
 
   public void simpleturningO() {
-    
-    
     var angle1 = new Rotation2d(1.0,1.0);
     var swerveModuleState1 = new SwerveModuleState(0, angle1);
     var angle2 = new Rotation2d(-1.0,1.0);
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
-    
-    m_frontLeft.setTurnDesiredState(swerveModuleState1);
-    m_frontRight.setTurnDesiredState(swerveModuleState2);
-    m_rearLeft.setTurnDesiredState(swerveModuleState2);
-    m_rearRight.setTurnDesiredState(swerveModuleState1);
+    m_frontLeft.setDesiredState(swerveModuleState1);
+    m_frontRight.setDesiredState(swerveModuleState2);
+    m_rearLeft.setDesiredState(swerveModuleState2);
+    m_rearRight.setDesiredState(swerveModuleState1);
   }
   public void simpleturningX() {
-    
-    
     var angle1 = new Rotation2d(1.0,1.0);
     var swerveModuleState1 = new SwerveModuleState(0, angle1);
     var angle2 = new Rotation2d(-1.0,1.0);
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
-    
-    m_frontLeft.setTurnDesiredState(swerveModuleState2);
-    m_frontRight.setTurnDesiredState(swerveModuleState1);
-    m_rearLeft.setTurnDesiredState(swerveModuleState1);
-    m_rearRight.setTurnDesiredState(swerveModuleState2);
+    m_frontLeft.setDesiredState(swerveModuleState2);
+    m_frontRight.setDesiredState(swerveModuleState1);
+    m_rearLeft.setDesiredState(swerveModuleState1);
+    m_rearRight.setDesiredState(swerveModuleState2);
   }
 
   /**
@@ -280,6 +278,56 @@ public class DriveSubsystem extends SubsystemBase {
     return 0.0;
   }
 
+  /**Check if all four modules reaches desired angle
+   * 
+   * @param setAngle in degrees
+   * @return
+   */
+  public boolean getModulesAtAngle(double setAngle){
+    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle(setAngle));
+    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle(setAngle));
+    if (!m_frontLeft.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_frontRight.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_rearLeft.atSetAngle(setAngle)){
+      return false;
+    }
+    else if (!m_rearRight.atSetAngle(setAngle)){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  /**
+   * 
+   * @param velocity
+   * @return
+   */
+  public boolean getModulesAtSpeed(double velocity){
+    if(Math.abs(m_rearRight.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_rearLeft.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_frontLeft.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else if(Math.abs(m_frontRight.getState().speedMetersPerSecond-velocity)>ModuleConstants.kDriveToleranceUnit){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
   public static TalonFXConfiguration getDrivePIDconfig(double kP, double kI, double kD, double kF){
     TalonFXConfiguration talon_config = new TalonFXConfiguration();
     talon_config.slot0.kP = kP;
@@ -295,5 +343,10 @@ public class DriveSubsystem extends SubsystemBase {
     turning_config.slot0.kD=kD;
     turning_config.slot0.kF=kF;
     return turning_config;
+  }
+
+  public SwerveModuleState[] getModuleStates(){
+    SwerveModuleState[] stateArray = {m_rearLeft.getState(), m_frontLeft.getState(),m_frontRight.getState(),m_rearRight.getState()};
+    return stateArray;
   }
 }
