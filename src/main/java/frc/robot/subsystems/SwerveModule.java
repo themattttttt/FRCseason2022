@@ -167,6 +167,7 @@ public class SwerveModule {
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
     double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
+    m_setAngle = desiredState.angle.getDegrees();
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
