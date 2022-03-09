@@ -34,7 +34,7 @@ public class SwerveModule {
   private final CANCoder m_turningEncoder;
 
   private double m_setAngle = 0.0;
-
+  private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
    *
@@ -162,7 +162,14 @@ public class SwerveModule {
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
     setTurnDesiredState(state);
-    setDesiredSpeed(desiredState.speedMetersPerSecond);
+    setDesiredSpeed(state.speedMetersPerSecond);
+    if (state.speedMetersPerSecond ==0 && state.angle.equals(desiredState.angle)){
+      m_Inverted = true;
+    }
+    else{
+      m_Inverted = false;
+    }
+
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
@@ -182,7 +189,10 @@ public class SwerveModule {
     return angle/m_turningEncoder.configGetFeedbackCoefficient();
   }
 
-  public void setDesiredSpeed(double driveOutput) {
+  private void setDesiredSpeed(double driveOutput) {
+    if(m_Inverted){
+      driveOutput *= -1.0;
+    }
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 

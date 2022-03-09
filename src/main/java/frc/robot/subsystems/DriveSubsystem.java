@@ -151,6 +151,12 @@ public class DriveSubsystem extends SubsystemBase {
   
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
+      xSpeed = 0.0;
+    }
+    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
+      ySpeed = 0.0;
+    }
     xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
     var swerveModuleStates =
@@ -175,10 +181,13 @@ public class DriveSubsystem extends SubsystemBase {
     if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
       Speed = DriveConstants.kMaxSpeedMetersPerSecond;
     }
-    m_frontLeft.setDesiredSpeed(Speed);
-    m_frontRight.setDesiredSpeed(Speed);
-    m_rearLeft.setDesiredSpeed(Speed);
-    m_rearRight.setDesiredSpeed(Speed);
+    else if (Speed < -DriveConstants.kMaxSpeedMetersPerSecond){
+      Speed = -DriveConstants.kMaxSpeedMetersPerSecond;
+    }
+    m_frontLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontLeft.getSetAngle()))));
+    m_frontRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontRight.getSetAngle()))));
+    m_rearLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearLeft.getSetAngle()))));
+    m_rearRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearRight.getSetAngle()))));
   }
 
 
