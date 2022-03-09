@@ -47,10 +47,10 @@ public class RobotContainer {
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   private final JoystickButton XButton=new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
   private final JoystickButton OButton=new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
-  private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
-  private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
-  private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
-  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
+  private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+  private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
+  private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
+  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
 
