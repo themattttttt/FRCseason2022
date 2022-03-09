@@ -80,7 +80,7 @@ public class SwerveModule {
       diff = 120-diff;
     }
     //m_turningEncoder.setPosition(diff);
-    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.Per100Ms_Legacy);
+    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.PerSecond);
 
 
     //config common settings
@@ -163,7 +163,7 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
     setTurnDesiredState(state);
     setDesiredSpeed(state.speedMetersPerSecond);
-    if (state.speedMetersPerSecond ==0 && state.angle.equals(desiredState.angle)){
+    if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
       m_Inverted = true;
     }
     else{
