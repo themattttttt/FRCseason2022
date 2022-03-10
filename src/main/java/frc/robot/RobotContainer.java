@@ -54,6 +54,7 @@ public class RobotContainer {
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
 
+  public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -79,11 +80,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
-      rightButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      leftButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      rightButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      leftButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       backwardButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      startButton.whenHeld(new TurnCommand(0, m_robotDrive));
+      startButton.whenHeld(resetCommand);
   }
 
   /**

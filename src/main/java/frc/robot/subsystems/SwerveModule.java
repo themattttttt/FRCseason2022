@@ -34,6 +34,7 @@ public class SwerveModule {
   private final CANCoder m_turningEncoder;
 
   private double m_setAngle = 0.0;
+  private double m_optimizedAngle = 0.0;
   private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
@@ -161,6 +162,7 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
+    m_optimizedAngle = state.angle.getDegrees();
     setTurnDesiredState(state);
     setDesiredSpeed(state.speedMetersPerSecond);
     if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
@@ -169,12 +171,10 @@ public class SwerveModule {
     else{
       m_Inverted = false;
     }
-
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
     double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
-    m_setAngle = desiredState.angle.getDegrees();
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
@@ -204,12 +204,17 @@ public class SwerveModule {
     m_turningMotor.clearStickyFaults();
   }
 
+  public void setToZero() {
+    SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
+    setTurnDesiredState(state);
+  }
+
   
   /**check if the turing motor reaches the desired angle
    * @param setAngle angle in degress
   */
   public boolean atSetAngle(){
-    double diff = Math.abs(m_turningEncoder.getPosition()-m_setAngle);
+    double diff = Math.abs(m_turningEncoder.getPosition()-m_optimizedAngle);
     return diff < ModuleConstants.kTurnToleranceDeg;
   }
   public void setAngle(double setAngle){

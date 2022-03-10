@@ -216,9 +216,13 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     m_frontLeft.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_frontRight.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_rearLeft.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_rearRight.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
   }
   public void simpleturningX() {
     var angle1 = new Rotation2d(1.0,1.0);
@@ -227,9 +231,13 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     m_frontLeft.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_frontRight.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_rearLeft.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_rearRight.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
   }
 
   /**
@@ -350,5 +358,12 @@ public class DriveSubsystem extends SubsystemBase {
   public SwerveModuleState[] getModuleStates(){
     SwerveModuleState[] stateArray = {m_rearLeft.getState(), m_frontLeft.getState(),m_frontRight.getState(),m_rearRight.getState()};
     return stateArray;
+  }
+
+  public void setAllToZero(){
+    m_frontLeft.setToZero();
+    m_frontRight.setToZero();
+    m_rearRight.setToZero();
+    m_rearLeft.setToZero();
   }
 }
