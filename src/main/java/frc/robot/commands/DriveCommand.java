@@ -49,6 +49,6 @@ public class DriveCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-    return m_drive.getModulesAtSpeed(m_speed);
+    return false;
   }
 }

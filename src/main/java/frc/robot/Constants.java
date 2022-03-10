@@ -82,7 +82,7 @@ public final class Constants {
     public static final double kpRearLeftDrive = 0.0;
     public static final double kiRearLeftDrive = 0.0;
     public static final double kdRearLeftDrive = 0.0;
-    public static final double kfRearLeftDrive = 0.048;
+    public static final double kfRearLeftDrive = 0.0456;
 
     public static final double kpRearLeftTurn = 1;
     public static final double kiRearLeftTurn = 0.0;
@@ -112,7 +112,7 @@ public final class Constants {
     public static final double kpRearRightDrive = 0.0;
     public static final double kiRearRightDrive = 0.0;
     public static final double kdRearRightDrive = 0.0;
-    public static final double kfRearRightDrive = 0.066;
+    public static final double kfRearRightDrive = 0.046;
 
     public static final double kpRearRightTurn = 1;
     public static final double kiRearRightTurn = 0.0;
