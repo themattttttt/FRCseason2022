@@ -73,6 +73,6 @@ public class TurnCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-    return m_drive.getModulesAtAngle(m_degree);
+    return m_drive.getModulesAtAngle();
   }
 }

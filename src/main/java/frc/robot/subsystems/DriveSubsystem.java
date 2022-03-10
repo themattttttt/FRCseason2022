@@ -92,9 +92,6 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.kRearRightDriveEncoderReversed,
         DriveConstants.kRearRightTurningEncoderOffset
         );
-  
-  //set module angle at degrees
-  private double m_setAngle = 0.0;
   // The gyro sensor
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
@@ -126,12 +123,11 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public double getCurrentAngle(){
-    return m_setAngle;
-  }
-
   public void setCurrentAngle(double angle){
-    m_setAngle = angle;
+    m_frontLeft.setAngle(angle);
+    m_frontRight.setAngle(angle);
+    m_rearLeft.setAngle(angle);
+    m_rearRight.setAngle(angle);
   }
 
   /**
@@ -141,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, new Rotation2d());
-    m_setAngle = 0.0;
+    setCurrentAngle(0.0);
   }
 
   /**
@@ -155,6 +151,14 @@ public class DriveSubsystem extends SubsystemBase {
   
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
+      xSpeed = 0.0;
+    }
+    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
+      ySpeed = 0.0;
+    }
+    xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
+    ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -174,18 +178,16 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drivestraight(double Speed) {
-
     if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
       Speed = DriveConstants.kMaxSpeedMetersPerSecond;
     }
-
-    var angle = new Rotation2d(Math.toRadians(m_setAngle));
-    var swerveModuleState = new SwerveModuleState(Speed,angle);
-    
-    m_frontLeft.setDesiredState(swerveModuleState);
-    m_frontRight.setDesiredState(swerveModuleState);
-    m_rearLeft.setDesiredState(swerveModuleState);
-    m_rearRight.setDesiredState(swerveModuleState);
+    else if (Speed < -DriveConstants.kMaxSpeedMetersPerSecond){
+      Speed = -DriveConstants.kMaxSpeedMetersPerSecond;
+    }
+    m_frontLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontLeft.getSetAngle()))));
+    m_frontRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontRight.getSetAngle()))));
+    m_rearLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearLeft.getSetAngle()))));
+    m_rearRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearRight.getSetAngle()))));
   }
 
 
@@ -214,9 +216,13 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     m_frontLeft.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_frontRight.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_rearLeft.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_rearRight.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
   }
   public void simpleturningX() {
     var angle1 = new Rotation2d(1.0,1.0);
@@ -225,9 +231,13 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
     
     m_frontLeft.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
     m_frontRight.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_rearLeft.setDesiredState(swerveModuleState1);
+    m_frontLeft.setAngle(angle1.getDegrees());
     m_rearRight.setDesiredState(swerveModuleState2);
+    m_frontLeft.setAngle(angle2.getDegrees());
   }
 
   /**
@@ -283,21 +293,21 @@ public class DriveSubsystem extends SubsystemBase {
    * @param setAngle in degrees
    * @return
    */
-  public boolean getModulesAtAngle(double setAngle){
-    SmartDashboard.putBoolean("Swerve 1 Angle", m_rearLeft.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 2 Angle", m_frontLeft.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 3 Angle", m_frontRight.atSetAngle(setAngle));
-    SmartDashboard.putBoolean("Swerve 4 Angle", m_rearRight.atSetAngle(setAngle));
-    if (!m_frontLeft.atSetAngle(setAngle)){
+  public boolean getModulesAtAngle(){
+    SmartDashboard.putBoolean("Swerve 1 Angle State", m_rearLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 2 Angle State", m_frontLeft.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 3 Angle State", m_frontRight.atSetAngle());
+    SmartDashboard.putBoolean("Swerve 4 Angle State", m_rearRight.atSetAngle());
+    if (!m_frontLeft.atSetAngle()){
       return false;
     }
-    else if (!m_frontRight.atSetAngle(setAngle)){
+    else if (!m_frontRight.atSetAngle()){
       return false;
     }
-    else if (!m_rearLeft.atSetAngle(setAngle)){
+    else if (!m_rearLeft.atSetAngle()){
       return false;
     }
-    else if (!m_rearRight.atSetAngle(setAngle)){
+    else if (!m_rearRight.atSetAngle()){
       return false;
     }
     else{
@@ -348,5 +358,12 @@ public class DriveSubsystem extends SubsystemBase {
   public SwerveModuleState[] getModuleStates(){
     SwerveModuleState[] stateArray = {m_rearLeft.getState(), m_frontLeft.getState(),m_frontRight.getState(),m_rearRight.getState()};
     return stateArray;
+  }
+
+  public void setAllToZero(){
+    m_frontLeft.setToZero();
+    m_frontRight.setToZero();
+    m_rearRight.setToZero();
+    m_rearLeft.setToZero();
   }
 }

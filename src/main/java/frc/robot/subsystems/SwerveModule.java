@@ -33,6 +33,9 @@ public class SwerveModule {
 
   private final CANCoder m_turningEncoder;
 
+  private double m_setAngle = 0.0;
+  private double m_optimizedAngle = 0.0;
+  private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
    *
@@ -78,7 +81,7 @@ public class SwerveModule {
       diff = 120-diff;
     }
     //m_turningEncoder.setPosition(diff);
-    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.Per100Ms_Legacy);
+    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.PerSecond);
 
 
     //config common settings
@@ -159,8 +162,15 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
+    m_optimizedAngle = state.angle.getDegrees();
     setTurnDesiredState(state);
-    setDriveDesiredState(state);
+    setDesiredSpeed(state.speedMetersPerSecond);
+    if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
+      m_Inverted = true;
+    }
+    else{
+      m_Inverted = false;
+    }
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
@@ -179,8 +189,10 @@ public class SwerveModule {
     return angle/m_turningEncoder.configGetFeedbackCoefficient();
   }
 
-  private void setDriveDesiredState(SwerveModuleState desiredState) {
-    double driveOutput = desiredState.speedMetersPerSecond;
+  private void setDesiredSpeed(double driveOutput) {
+    if(m_Inverted){
+      driveOutput *= -1.0;
+    }
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
@@ -192,12 +204,23 @@ public class SwerveModule {
     m_turningMotor.clearStickyFaults();
   }
 
+  public void setToZero() {
+    SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
+    setTurnDesiredState(state);
+  }
+
   
   /**check if the turing motor reaches the desired angle
    * @param setAngle angle in degress
   */
-  public boolean atSetAngle(double setAngle){
-    double diff = Math.abs(m_turningEncoder.getPosition()-setAngle);
+  public boolean atSetAngle(){
+    double diff = Math.abs(m_turningEncoder.getPosition()-m_optimizedAngle);
     return diff < ModuleConstants.kTurnToleranceDeg;
+  }
+  public void setAngle(double setAngle){
+    m_setAngle = setAngle;
+  }
+  public double getSetAngle(){
+    return m_setAngle;
   }
 }
