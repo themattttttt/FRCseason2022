@@ -24,7 +24,7 @@ public class DefenseXCommand extends CommandBase {
   }
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("X reached", isFinished());
+    SmartDashboard.putBoolean("X reached", m_drive.getModulesAtAngle(););
     m_drive.simpleturningX();
   }
 
@@ -32,6 +32,6 @@ public class DefenseXCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-    return m_drive.getModulesAtAngle();
+    return false;
   }
 }

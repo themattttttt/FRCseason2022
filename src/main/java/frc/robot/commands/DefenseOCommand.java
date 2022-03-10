@@ -21,7 +21,7 @@ public class DefenseOCommand extends CommandBase {
   }
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("O reached", isFinished());
+    SmartDashboard.putBoolean("O reached", m_drive.getModulesAtAngle());
     m_drive.simpleturningO();
   }
 
@@ -29,6 +29,6 @@ public class DefenseOCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-    return m_drive.getModulesAtAngle();
+    return false;
   }
 }
