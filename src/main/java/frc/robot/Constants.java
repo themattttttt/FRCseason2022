@@ -39,8 +39,8 @@ public final class Constants {
     public static final boolean kRearRightTurningEncoderReversed = true;
 
 
-    public static final double kFrontLeftTurningEncoderOffset = 81.541;
-    public static final double kRearLeftTurningEncoderOffset = 38.463;
+    public static final double kFrontLeftTurningEncoderOffset = 38.463;
+    public static final double kRearLeftTurningEncoderOffset = 81.541;
     public static final double kFrontRightTurningEncoderOffset = 58.140;
     public static final double kRearRightTurningEncoderOffset = 34.113;
 
@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final double kTrackWidth = 0.5;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    public static final double kWheelBase = 0.5;
     // Distance between front and back wheels on robot
 
     public static final double kTurnToleranceDeg = 0.0;
@@ -60,10 +60,10 @@ public final class Constants {
 
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2));
 
     public static final boolean kGyroReversed = false;
 
