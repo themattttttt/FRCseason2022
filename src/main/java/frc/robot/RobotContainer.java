@@ -32,6 +32,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -63,10 +65,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    
     m_robotDrive.setDefaultCommand(
         // Run parallel moving, then stop at the end.
-        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),0.0,false)
+        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),3000*(-m_driverController.getRightTriggerAxis()+ m_driverController.getLeftTriggerAxis()),false)
             , m_robotDrive)
     );
   }
@@ -80,10 +81,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
-      rightButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      leftButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      rightButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      leftButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      backwardButton.whenHeld(new TurnCommand(-1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       startButton.whenHeld(resetCommand);
   }
 

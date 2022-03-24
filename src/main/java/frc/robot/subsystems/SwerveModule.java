@@ -21,6 +21,7 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.math.trajectory.TrapezoidProfile;
 //import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ModuleConstants;
@@ -67,6 +68,7 @@ public class SwerveModule {
     this.m_turningEncoder = new CANCoder(turningEncoderPort);
 
     //reset CANCoder read offset
+    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.PerSecond);
     double current_reading = m_turningEncoder.getAbsolutePosition();
     double diff = current_reading-turningEncoderOffset;
     //Before the game start, the team should manally calibrate the wheels. Theoratically the diff should be within -60 and 60 in degrees
@@ -76,12 +78,13 @@ public class SwerveModule {
      * A quick example here: if the wheel rotates 1 full circle, the encoder read will change by 8/3 circles, which is +2/3*360 or -1/3*360 in absolute value
      * in short, the increment of absolute value can only be 0, 120 or 240.
      */
-    diff = (diff+120) % 120;
-    if(diff > 60){
-      diff = 120-diff;
+    SmartDashboard.putNumber("diff", diff);
+    diff = (diff+45) % 45;
+    if(diff > 22.5){
+      diff = diff-45;
     }
-    //m_turningEncoder.setPosition(diff);
-    m_turningEncoder.configFeedbackCoefficient(ModuleConstants.kCANCoderCoefficient,"degree",SensorTimeBase.PerSecond);
+    m_turningEncoder.setPosition(diff);
+    
 
 
     //config common settings
@@ -93,7 +96,9 @@ public class SwerveModule {
     drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
     drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
 
+    drive_config.neutralDeadband = 0.01;
     //config common motor settings
+    
 
     m_driveMotor.configAllSettings(drive_config);
     m_driveMotor.setSensorPhase(true);

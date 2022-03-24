@@ -39,20 +39,20 @@ public final class Constants {
     public static final boolean kRearRightTurningEncoderReversed = true;
 
 
-    public static final double kFrontLeftTurningEncoderOffset = 0.0;
-    public static final double kRearLeftTurningEncoderOffset = 0.0;
-    public static final double kFrontRightTurningEncoderOffset = 0.0;
-    public static final double kRearRightTurningEncoderOffset = 0.0;
+    public static final double kFrontLeftTurningEncoderOffset = 38.463;
+    public static final double kRearLeftTurningEncoderOffset = 81.541;
+    public static final double kFrontRightTurningEncoderOffset = 58.140;
+    public static final double kRearRightTurningEncoderOffset = 34.113;
 
 
-    public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kRearLeftDriveEncoderReversed = false;
-    public static final boolean kFrontRightDriveEncoderReversed = true;
-    public static final boolean kRearRightDriveEncoderReversed = true;
+    public static final boolean kFrontLeftDriveEncoderReversed = true;
+    public static final boolean kRearLeftDriveEncoderReversed = true;
+    public static final boolean kFrontRightDriveEncoderReversed = false;
+    public static final boolean kRearRightDriveEncoderReversed = false;
 
     public static final double kTrackWidth = 0.5;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    public static final double kWheelBase = 0.5;
     // Distance between front and back wheels on robot
 
     public static final double kTurnToleranceDeg = 0.0;
@@ -60,10 +60,10 @@ public final class Constants {
 
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2));
 
     public static final boolean kGyroReversed = false;
 
@@ -79,40 +79,40 @@ public final class Constants {
   }
 
   public static final class PIDConfigConstants {
-    public static final double kpRearLeftDrive = 0.0;
-    public static final double kiRearLeftDrive = 0.0;
-    public static final double kdRearLeftDrive = 0.0;
-    public static final double kfRearLeftDrive = 0.0456;
+    public static final double kpRearLeftDrive = 0.066;
+    public static final double kiRearLeftDrive = 0.00066;
+    public static final double kdRearLeftDrive = 1.5;
+    public static final double kfRearLeftDrive = 0.046695;
 
     public static final double kpRearLeftTurn = 1;
     public static final double kiRearLeftTurn = 0.0;
     public static final double kdRearLeftTurn = 0.0;
     public static final double kfRearLeftTurn = 0.39;
 
-    public static final double kpFrontLeftDrive = 0.0;
-    public static final double kiFrontLeftDrive = 0.0;
-    public static final double kdFrontLeftDrive = 0.0;
-    public static final double kfFrontLeftDrive = 0.046;
+    public static final double kpFrontLeftDrive = 0.072;
+    public static final double kiFrontLeftDrive = 0.00072;
+    public static final double kdFrontLeftDrive = 1.8;
+    public static final double kfFrontLeftDrive = 0.046595;
 
     public static final double kpFrontLeftTurn = 1;
     public static final double kiFrontLeftTurn = 0.0;
     public static final double kdFrontLeftTurn = 0.0;
     public static final double kfFrontLeftTurn = 0.39;
 
-    public static final double kpFrontRightDrive = 0.0;
-    public static final double kiFrontRightDrive = 0.0;
-    public static final double kdFrontRightDrive = 0.0;
-    public static final double kfFrontRightDrive = 0.045;
+    public static final double kpFrontRightDrive = 0.072;
+    public static final double kiFrontRightDrive = 0.00072;
+    public static final double kdFrontRightDrive = 1.8;
+    public static final double kfFrontRightDrive = 0.046227;
 
     public static final double kpFrontRightTurn = 1;
     public static final double kiFrontRightTurn = 0.0;
     public static final double kdFrontRightTurn = 0.0;
     public static final double kfFrontRightTurn = 0.39;
     
-    public static final double kpRearRightDrive = 0.0;
-    public static final double kiRearRightDrive = 0.0;
-    public static final double kdRearRightDrive = 0.0;
-    public static final double kfRearRightDrive = 0.046;
+    public static final double kpRearRightDrive = 0.072;
+    public static final double kiRearRightDrive = 0.00072;
+    public static final double kdRearRightDrive = 1.8;
+    public static final double kfRearRightDrive = 0.046168;
 
     public static final double kpRearRightTurn = 1;
     public static final double kiRearRightTurn = 0.0;
