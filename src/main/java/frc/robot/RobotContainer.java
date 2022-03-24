@@ -22,11 +22,14 @@ import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.OperateConstants;
 import frc.robot.commands.DefenseXCommand;
 import frc.robot.commands.DefenseOCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsytem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -44,9 +47,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
+
 
   // The driver's controller
   public final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  public final XboxController m_operateController = new XboxController(OIConstants.kOperateControllerPort);
+
+  //Create buttons
   private final JoystickButton XButton=new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
   private final JoystickButton OButton=new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
   private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
@@ -54,6 +62,8 @@ public class RobotContainer {
   private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
   private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
+
+  private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
 
 
   public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
@@ -86,6 +96,8 @@ public class RobotContainer {
       forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       startButton.whenHeld(resetCommand);
+
+      ShootButton.whenHeld(new ShooterCommand(m_shooter));
   }
 
   /**

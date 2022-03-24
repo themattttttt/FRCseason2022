@@ -158,6 +158,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperateControllerPort = 1;
   }
 
   public static final class JoystickConstants{
@@ -193,5 +194,10 @@ public final class Constants {
       public static final double kMaxAccelerationRadPerSecSquared = 10;
       public static final double kEncoderDistancePerPulse=0;
       public static final double kArmOffsetRads=0;
+  }
+
+  public static final class OperateConstants{
+    public static final int kLowerShooterChannel = 31;
+    public static final int kUpperShooterChannel = 32;
   }
 }
