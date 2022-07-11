@@ -16,7 +16,12 @@ public class ShooterSubsytem extends SubsystemBase{
     }
 
     public void Shoot(){
-        m_lowermotor.set(0.5);
-        m_uppermoter.set(0.5);
+        m_lowermotor.set(1);
+        m_uppermoter.set(0.2);
+    }
+
+    public void Stop(){
+        m_lowermotor.set(0);
+        m_uppermoter.set(0);
     }
 }

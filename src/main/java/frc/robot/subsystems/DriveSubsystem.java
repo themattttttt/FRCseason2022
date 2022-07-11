@@ -170,6 +170,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+    /*
     SmartDashboard.putNumber("m_frontLeft_speed", swerveModuleStates[0].speedMetersPerSecond);
     SmartDashboard.putNumber("m_frontLeft_angle", swerveModuleStates[0].angle.getDegrees());
     SmartDashboard.putNumber("m_frontRight_speed", swerveModuleStates[1].speedMetersPerSecond);
@@ -178,6 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("m_rearLeft_angle", swerveModuleStates[2].angle.getDegrees());
     SmartDashboard.putNumber("m_rearRight_speed", swerveModuleStates[3].speedMetersPerSecond);
     SmartDashboard.putNumber("m_rearRight_angle", swerveModuleStates[3].angle.getDegrees());
+    */
   }
   
   /**
@@ -302,10 +304,12 @@ public class DriveSubsystem extends SubsystemBase {
    * @return
    */
   public boolean getModulesAtAngle(){
+    /*
     SmartDashboard.putBoolean("Swerve 1 Angle State", m_rearLeft.atSetAngle());
     SmartDashboard.putBoolean("Swerve 2 Angle State", m_frontLeft.atSetAngle());
     SmartDashboard.putBoolean("Swerve 3 Angle State", m_frontRight.atSetAngle());
     SmartDashboard.putBoolean("Swerve 4 Angle State", m_rearRight.atSetAngle());
+    */
     if (!m_frontLeft.atSetAngle()){
       return false;
     }

@@ -30,6 +30,9 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
+import frc.robot.subsystems.Pneumatic;
+import frc.robot.commands.PneumaticRetractCommand;
+import frc.robot.commands.PneumaticReleaseCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -48,6 +51,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
+  private final Pneumatic m_pnematic = new Pneumatic(0);
 
 
   // The driver's controller
@@ -64,7 +68,9 @@ public class RobotContainer {
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
-
+  private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
+  private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
+  
 
   public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
 
@@ -96,8 +102,11 @@ public class RobotContainer {
       forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       startButton.whenHeld(resetCommand);
+      ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
+      RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
 
       ShootButton.whenHeld(new ShooterCommand(m_shooter));
+
   }
 
   /**
