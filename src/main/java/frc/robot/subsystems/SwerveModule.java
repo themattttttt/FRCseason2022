@@ -73,15 +73,15 @@ public class SwerveModule {
     double diff = current_reading-turningEncoderOffset;
     //Before the game start, the team should manally calibrate the wheels. Theoratically the diff should be within -60 and 60 in degrees
     /**
-     * A full rotation of the wheel results in 8/3 rotations of the encoder cylinder (gear ratio 8:3)
+     * A full rotation of the wheel results in 8/3 rotations of the ezncoder cylinder (gear ratio 8:3)
      * Absolute reading of the encoder is in range [0,360)
      * A quick example here: if the wheel rotates 1 full circle, the encoder read will change by 8/3 circles, which is +2/3*360 or -1/3*360 in absolute value
      * in short, the increment of absolute value can only be 0, 120 or 240.
      */
     SmartDashboard.putNumber("diff", diff);
-    diff = (diff+45) % 45;
+    diff = (diff+90) % 45;
     if(diff > 22.5){
-      diff = diff-45;
+      diff = diff-90;
     }
     m_turningEncoder.setPosition(diff);
     
@@ -122,9 +122,10 @@ public class SwerveModule {
     turn_config.slot0.closedLoopPeriod = 1;
     //For integrals, integrate errors out of the zone and accumulate until the max
     turn_config.slot0.allowableClosedloopError = 50;
-    turn_config.slot0.integralZone = 100;
+    turn_config.slot0.integralZone = 300;
     turn_config.slot0.maxIntegralAccumulator = 1000;
 
+    
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
     turn_config.forwardSoftLimitEnable = true;
@@ -152,7 +153,7 @@ public class SwerveModule {
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
-    m_turningMotor.setInverted(true);
+    m_turningMotor.setInverted(false);
 
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
     }

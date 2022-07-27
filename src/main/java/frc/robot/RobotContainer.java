@@ -100,7 +100,7 @@ public class RobotContainer {
       rightButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       leftButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
       forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
+      backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(-1.0, m_robotDrive)));
       startButton.whenHeld(resetCommand);
       ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));

@@ -40,9 +40,9 @@ public final class Constants {
 
 
     public static final double kFrontLeftTurningEncoderOffset = 38.463;
-    public static final double kRearLeftTurningEncoderOffset = 81.541;
+    public static final double kRearLeftTurningEncoderOffset = 47.362;
     public static final double kFrontRightTurningEncoderOffset = 58.140;
-    public static final double kRearRightTurningEncoderOffset = 34.113;
+    public static final double kRearRightTurningEncoderOffset = 23.269;
 
 
     public static final boolean kFrontLeftDriveEncoderReversed = true;
@@ -84,40 +84,40 @@ public final class Constants {
     public static final double kdRearLeftDrive = 1.5;
     public static final double kfRearLeftDrive = 0.046695;
 
-    public static final double kpRearLeftTurn = 1;
-    public static final double kiRearLeftTurn = 0.0;
-    public static final double kdRearLeftTurn = 0.0;
-    public static final double kfRearLeftTurn = 0.39;
+    public static final double kpRearLeftTurn = 0.2;
+    public static final double kiRearLeftTurn = 0.1;
+    public static final double kdRearLeftTurn = 3.0;
+    public static final double kfRearLeftTurn = 0.0;
 
     public static final double kpFrontLeftDrive = 0.072;
     public static final double kiFrontLeftDrive = 0.00072;
     public static final double kdFrontLeftDrive = 1.8;
     public static final double kfFrontLeftDrive = 0.046595;
 
-    public static final double kpFrontLeftTurn = 1;
-    public static final double kiFrontLeftTurn = 0.0;
-    public static final double kdFrontLeftTurn = 0.0;
-    public static final double kfFrontLeftTurn = 0.39;
+    public static final double kpFrontLeftTurn = 0.2;
+    public static final double kiFrontLeftTurn = 0.1;
+    public static final double kdFrontLeftTurn = 3.0;
+    public static final double kfFrontLeftTurn = 0.0;
 
     public static final double kpFrontRightDrive = 0.072;
     public static final double kiFrontRightDrive = 0.00072;
     public static final double kdFrontRightDrive = 1.8;
     public static final double kfFrontRightDrive = 0.046227;
 
-    public static final double kpFrontRightTurn = 1;
-    public static final double kiFrontRightTurn = 0.0;
-    public static final double kdFrontRightTurn = 0.0;
-    public static final double kfFrontRightTurn = 0.39;
+    public static final double kpFrontRightTurn = 0.12;
+    public static final double kiFrontRightTurn = 0.08;
+    public static final double kdFrontRightTurn = 1.5;
+    public static final double kfFrontRightTurn = 0.0;
     
     public static final double kpRearRightDrive = 0.072;
     public static final double kiRearRightDrive = 0.00072;
     public static final double kdRearRightDrive = 1.8;
     public static final double kfRearRightDrive = 0.046168;
 
-    public static final double kpRearRightTurn = 1;
-    public static final double kiRearRightTurn = 0.0;
-    public static final double kdRearRightTurn = 0.0;
-    public static final double kfRearRightTurn = 0.39;
+    public static final double kpRearRightTurn = 0.2;
+    public static final double kiRearRightTurn = 0.08;
+    public static final double kdRearRightTurn = 2.0;
+    public static final double kfRearRightTurn = 0.0;
 
     
     
