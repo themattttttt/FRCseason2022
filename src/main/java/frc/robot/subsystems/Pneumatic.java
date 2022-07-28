@@ -19,7 +19,7 @@ public class Pneumatic extends SubsystemBase {
         m_pcmCompressor = new Compressor(PCM_id, PneumaticsModuleType.CTREPCM);
         m_pcmCompressor.enableDigital();
         m_pcmSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 5);
-        m_pcmCompressor.disable();
+        //m_pcmCompressor.disable();
         
         boolean enabled = m_pcmCompressor.enabled();
         boolean pressureSwitch = m_pcmCompressor.getPressureSwitchValue();
