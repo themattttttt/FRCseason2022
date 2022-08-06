@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperateConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -34,6 +35,7 @@ import frc.robot.commands.ShooterOutCommand;
 import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.ArmTempSystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
 import frc.robot.subsystems.Pneumatic;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -60,6 +62,7 @@ public class RobotContainer {
   private final Pneumatic m_pnematic = new Pneumatic(0);
   private final ArmTempSystem m_arm = new ArmTempSystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
 
 
   // The driver's controller
@@ -125,8 +128,18 @@ public class RobotContainer {
       
       if (m_operateController.getPOV()==0){
          m_intake.operate(IntakeConstants.kPositivePercentageOutput);
-      }else if(m_operateController.getPOV()==180){
+      }
+      else if(m_operateController.getPOV()==180){
         m_intake.operate(IntakeConstants.kNegativePercentageOutput);
+      }
+
+
+
+      if(m_operateController.getLeftY()<-0.1){
+        m_elevator.operate(ElevatorConstants.kElevatorUpSpeed);
+      }
+      else if(m_operateController.getLeftY()>0.1){
+        m_elevator.operate(ElevatorConstants.kElevatorDownSpeed);
       }
 
 

@@ -210,7 +210,8 @@ public final class Constants {
     public static final int kUpperMotorPort = 32;
     public static final int kLowerMotorPort = 31;
     public static final double kUpperMotorOutput = 1.0;
-    public static final double kLowerMotorOutput =0.2;
+    public static final double kLowerMotorOutput = 0.2;
+    public static final double kLowerMotorOutOutput = -0.2;
 
   }
 
@@ -219,9 +220,9 @@ public final class Constants {
       public static final double kpElevator = 0;
       public static final double kiElevator = 0;
       public static final double kdElevator = 0;
-      public static final double kfElevator = 0;
-      public static final int kElevatorUpSpeed = 0;
-      public static final int kElevatorDownSpeed = 0;
+      public static final double kfElevator = 0.05115;
+      public static final int kElevatorUpSpeed = -4000;
+      public static final int kElevatorDownSpeed = 4000;
   }
 
   public static final class OperateConstants{
