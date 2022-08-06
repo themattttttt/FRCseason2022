@@ -208,8 +208,9 @@ public final class Constants {
   public static final class ShooterConstants{
     public static final int kUpperMotorPort = 32;
     public static final int kLowerMotorPort = 31;
-    public static final double kUpperMotorOutput = 0.2;
-    public static final double kLowerMotorOutput =1.0;
+    public static final double kUpperMotorOutput = 1.0;
+    public static final double kLowerMotorOutput = 0.2;
+    public static final double kLowerMotorOutOutput = -0.2;
 
   }
 

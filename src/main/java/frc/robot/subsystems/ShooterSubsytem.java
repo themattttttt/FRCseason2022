@@ -21,6 +21,11 @@ public class ShooterSubsytem extends SubsystemBase{
         m_uppermoter.set(ShooterConstants.kUpperMotorOutput);
     }
 
+    public void out(){
+        m_lowermotor.set(ShooterConstants.kLowerMotorOutOutput);
+        m_uppermoter.set(0);
+    }
+
     public void Stop(){
         m_lowermotor.set(0);
         m_uppermoter.set(0);
