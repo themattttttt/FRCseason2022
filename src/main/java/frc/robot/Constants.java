@@ -84,8 +84,8 @@ public final class Constants {
     public static final double kdRearLeftDrive = 1.5;
     public static final double kfRearLeftDrive = 0.046695;
 
-    public static final double kpRearLeftTurn = 0.2;
-    public static final double kiRearLeftTurn = 0;
+    public static final double kpRearLeftTurn = 0.3;
+    public static final double kiRearLeftTurn = 0.036;
     public static final double kdRearLeftTurn = 3.0;
     public static final double kfRearLeftTurn = 0.0;
 
@@ -94,9 +94,9 @@ public final class Constants {
     public static final double kdFrontLeftDrive = 1.8;
     public static final double kfFrontLeftDrive = 0.046595;
 
-    public static final double kpFrontLeftTurn = 0.2;
+    public static final double kpFrontLeftTurn = 0.66;
     public static final double kiFrontLeftTurn = 0.0;
-    public static final double kdFrontLeftTurn = 3.0;
+    public static final double kdFrontLeftTurn = 1.296;
     public static final double kfFrontLeftTurn = 0.0;
 
     public static final double kpFrontRightDrive = 0.072;
@@ -104,9 +104,9 @@ public final class Constants {
     public static final double kdFrontRightDrive = 1.8;
     public static final double kfFrontRightDrive = 0.046227;
 
-    public static final double kpFrontRightTurn = 0.12;
+    public static final double kpFrontRightTurn = 0.1;
     public static final double kiFrontRightTurn = 0.0;
-    public static final double kdFrontRightTurn = 1.5;
+    public static final double kdFrontRightTurn = 0.0;
     public static final double kfFrontRightTurn = 0.0;
     
     public static final double kpRearRightDrive = 0.072;
@@ -114,9 +114,9 @@ public final class Constants {
     public static final double kdRearRightDrive = 1.8;
     public static final double kfRearRightDrive = 0.046168;
 
-    public static final double kpRearRightTurn = 0.2;
+    public static final double kpRearRightTurn = 0.1;
     public static final double kiRearRightTurn = 0.0;
-    public static final double kdRearRightTurn = 2.0;
+    public static final double kdRearRightTurn = 0.0;
     public static final double kfRearRightTurn = 0.0;
 
     
@@ -182,12 +182,13 @@ public final class Constants {
   public static final class ArmConstants{
       public static final int kArmMotorPort = 5;
       public static final int kArmMotorPort2 = 7;
-      public static final double kPArmController = 0;
-      public static final double kDArmController = 0;
+      public static final double kPArmController = 0.04;
+      public static final double kDArmController = 0.02;
       public static final double kIArmController = 0;
+      public static final double kFArmController = 0.045;
 
-      public static final double kArmBackwardSpeed = 450;
-      public static final double kArmForwardSpeed = -450;
+      public static final double kArmBackwardSpeed = 1500;
+      public static final double kArmForwardSpeed = -1500;
 
       //public static final double kPArmController = 0;
       public static final double kSVolts = 1;
@@ -208,8 +209,8 @@ public final class Constants {
   public static final class ShooterConstants{
     public static final int kUpperMotorPort = 32;
     public static final int kLowerMotorPort = 31;
-    public static final double kUpperMotorOutput = 0.2;
-    public static final double kLowerMotorOutput =1.0;
+    public static final double kUpperMotorOutput = 1.0;
+    public static final double kLowerMotorOutput =0.2;
 
   }
 

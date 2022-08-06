@@ -145,7 +145,7 @@ public class SwerveModule {
     m_turningMotor.configAllSettings(turn_config);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
-		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20);
+	  m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
 		//m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20);
 
     //Set neutral mode to brake to self lock the motor when power on
@@ -153,7 +153,7 @@ public class SwerveModule {
 
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
-    m_turningMotor.setInverted(false);
+    m_turningMotor.setInverted(true);
 
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
     }

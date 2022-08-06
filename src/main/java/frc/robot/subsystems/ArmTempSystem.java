@@ -23,7 +23,7 @@ public class ArmTempSystem extends SubsystemBase{
             ArmConstants.kPArmController,
             ArmConstants.kIArmController,
             ArmConstants.kDArmController,
-            0);
+            ArmConstants.kFArmController);
     
         this.m_motor.clearStickyFaults();
         this.m_motor2.clearStickyFaults();
