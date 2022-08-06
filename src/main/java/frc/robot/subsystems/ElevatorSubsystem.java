@@ -19,7 +19,7 @@ public class ElevatorSubsystem extends SubsystemBase{
             ElevatorConstants.kpElevator,
             ElevatorConstants.kiElevator,
             ElevatorConstants.kdElevator,
-            ElevatorConstants.kiElevator);
+            ElevatorConstants.kfElevator);
     
         this.m_motor.clearStickyFaults();
 
