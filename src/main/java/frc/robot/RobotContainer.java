@@ -23,17 +23,20 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperateConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.DefenseXCommand;
 import frc.robot.commands.ArmBackwardTempCommand;
 import frc.robot.commands.ArmForwardTempCommand;
 import frc.robot.commands.DefenseOCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterOutCommand;
 import frc.robot.commands.TurnCommand;
 import frc.robot.subsystems.ArmTempSystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
 import frc.robot.subsystems.Pneumatic;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.PneumaticRetractCommand;
 import frc.robot.commands.PneumaticReleaseCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,6 +59,7 @@ public class RobotContainer {
   private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
   private final Pneumatic m_pnematic = new Pneumatic(0);
   private final ArmTempSystem m_arm = new ArmTempSystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
 
   // The driver's controller
@@ -72,11 +76,14 @@ public class RobotContainer {
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
+  private final JoystickButton ShootOutButton = new JoystickButton(m_operateController, XboxController.Button.kA.value);
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
 
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
+
+ //private final JoystickButton intakeInButton = new JoystickButton(m_operateController,XboxController.)
 
   public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
 
@@ -112,8 +119,15 @@ public class RobotContainer {
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
 
       ShootButton.whenHeld(new ShooterCommand(m_shooter));
+      ShootOutButton.whenHeld(new ShooterOutCommand(m_shooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
+      
+      if (m_operateController.getPOV()==0){
+         m_intake.operate(IntakeConstants.kPositivePercentageOutput);
+      }else if(m_operateController.getPOV()==180){
+        m_intake.operate(IntakeConstants.kNegativePercentageOutput);
+      }
 
 
 
