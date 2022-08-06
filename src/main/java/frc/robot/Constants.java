@@ -39,7 +39,7 @@ public final class Constants {
     public static final boolean kRearRightTurningEncoderReversed = true;
 
 
-    public static final double kFrontLeftTurningEncoderOffset = 38.463;
+    public static final double kFrontLeftTurningEncoderOffset = 38.463 ;
     public static final double kRearLeftTurningEncoderOffset = 47.362;
     public static final double kFrontRightTurningEncoderOffset = 58.140;
     public static final double kRearRightTurningEncoderOffset = 23.269;
@@ -80,12 +80,12 @@ public final class Constants {
 
   public static final class PIDConfigConstants {
     public static final double kpRearLeftDrive = 0.066;
-    public static final double kiRearLeftDrive = 0.00066;
+    public static final double kiRearLeftDrive = 0.0006;
     public static final double kdRearLeftDrive = 1.5;
     public static final double kfRearLeftDrive = 0.046695;
 
     public static final double kpRearLeftTurn = 0.2;
-    public static final double kiRearLeftTurn = 0.1;
+    public static final double kiRearLeftTurn = 0;
     public static final double kdRearLeftTurn = 3.0;
     public static final double kfRearLeftTurn = 0.0;
 
@@ -95,7 +95,7 @@ public final class Constants {
     public static final double kfFrontLeftDrive = 0.046595;
 
     public static final double kpFrontLeftTurn = 0.2;
-    public static final double kiFrontLeftTurn = 0.1;
+    public static final double kiFrontLeftTurn = 0.0;
     public static final double kdFrontLeftTurn = 3.0;
     public static final double kfFrontLeftTurn = 0.0;
 
@@ -105,7 +105,7 @@ public final class Constants {
     public static final double kfFrontRightDrive = 0.046227;
 
     public static final double kpFrontRightTurn = 0.12;
-    public static final double kiFrontRightTurn = 0.08;
+    public static final double kiFrontRightTurn = 0.0;
     public static final double kdFrontRightTurn = 1.5;
     public static final double kfFrontRightTurn = 0.0;
     
@@ -115,7 +115,7 @@ public final class Constants {
     public static final double kfRearRightDrive = 0.046168;
 
     public static final double kpRearRightTurn = 0.2;
-    public static final double kiRearRightTurn = 0.08;
+    public static final double kiRearRightTurn = 0.0;
     public static final double kdRearRightTurn = 2.0;
     public static final double kfRearRightTurn = 0.0;
 
@@ -180,10 +180,15 @@ public final class Constants {
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
   public static final class ArmConstants{
-      public static final int kArmMotorPort = 0;
+      public static final int kArmMotorPort = 5;
+      public static final int kArmMotorPort2 = 7;
       public static final double kPArmController = 0;
       public static final double kDArmController = 0;
       public static final double kIArmController = 0;
+
+      public static final double kArmBackwardSpeed = 450;
+      public static final double kArmForwardSpeed = -450;
+
       //public static final double kPArmController = 0;
       public static final double kSVolts = 1;
       public static final double kGVolts = 1;
@@ -194,6 +199,28 @@ public final class Constants {
       public static final double kMaxAccelerationRadPerSecSquared = 10;
       public static final double kEncoderDistancePerPulse=0;
       public static final double kArmOffsetRads=0;
+  }
+  public static final class IntakeConstants{
+    public static final int kIntakeMotorPort = 25;
+    public static final double kPositivePercentageOutput = 0.5;
+    public static final double kNegativePercentageOutput = -0.5;
+  }
+  public static final class ShooterConstants{
+    public static final int kUpperMotorPort = 32;
+    public static final int kLowerMotorPort = 31;
+    public static final double kUpperMotorOutput = 0.2;
+    public static final double kLowerMotorOutput =1.0;
+
+  }
+
+  public static final class ElevatorConstants{
+      public static final int kElevatorMotorPort = 6;
+      public static final double kpElevator = 0;
+      public static final double kiElevator = 0;
+      public static final double kdElevator = 0;
+      public static final double kfElevator = 0;
+      public static final int kElevatorUpSpeed = 0;
+      public static final int kElevatorDownSpeed = 0;
   }
 
   public static final class OperateConstants{

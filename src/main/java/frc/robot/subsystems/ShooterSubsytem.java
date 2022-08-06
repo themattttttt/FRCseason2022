@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;;
 
 public class ShooterSubsytem extends SubsystemBase{
     private final CANSparkMax m_lowermotor;
@@ -11,13 +12,13 @@ public class ShooterSubsytem extends SubsystemBase{
     
 
     public ShooterSubsytem(int lowerID, int upperID){
-        m_lowermotor = new CANSparkMax(lowerID,MotorType.kBrushless);
-        m_uppermoter = new CANSparkMax(upperID,MotorType.kBrushless);
+        m_lowermotor = new CANSparkMax(ShooterConstants.kLowerMotorPort,MotorType.kBrushless);
+        m_uppermoter = new CANSparkMax(ShooterConstants.kUpperMotorPort,MotorType.kBrushless);
     }
 
     public void Shoot(){
-        m_lowermotor.set(1);
-        m_uppermoter.set(0.2);
+        m_lowermotor.set(ShooterConstants.kLowerMotorOutput);
+        m_uppermoter.set(ShooterConstants.kUpperMotorOutput);
     }
 
     public void Stop(){

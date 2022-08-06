@@ -24,10 +24,13 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperateConstants;
 import frc.robot.commands.DefenseXCommand;
+import frc.robot.commands.ArmBackwardTempCommand;
+import frc.robot.commands.ArmForwardTempCommand;
 import frc.robot.commands.DefenseOCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TurnCommand;
+import frc.robot.subsystems.ArmTempSystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
 import frc.robot.subsystems.Pneumatic;
@@ -52,6 +55,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
   private final Pneumatic m_pnematic = new Pneumatic(0);
+  private final ArmTempSystem m_arm = new ArmTempSystem();
 
 
   // The driver's controller
@@ -70,7 +74,9 @@ public class RobotContainer {
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
-  
+
+  private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
+  private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
 
   public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
 
@@ -106,6 +112,10 @@ public class RobotContainer {
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
 
       ShootButton.whenHeld(new ShooterCommand(m_shooter));
+      armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
+      armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
+
+
 
   }
 

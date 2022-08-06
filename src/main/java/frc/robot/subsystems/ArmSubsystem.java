@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 public class ArmSubsystem extends ProfiledPIDSubsystem {
   //很简单吧新建一个电机，kArmMotorport 要改成电机的can ，现在还没设置
   private final TalonFX m_motor = new TalonFX(ArmConstants.kArmMotorPort);
+  private final TalonFX m_motor2 = new TalonFX(ArmConstants.kArmMotorPort2);
 
   /** Create a new ArmSubsystem. */
   public ArmSubsystem() { //这玩意叫constructor，就是初始化一个 ArmSubsystem 的物体，里面的代码只跑一遍，包含一些初始设置
@@ -40,7 +41,8 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     talon_configs.sum0Term = FeedbackDevice.IntegratedSensor;
     //以上的四行代码都是在初始化（我觉得也可以理解为配对）Falcon 的 Integrated sensor （读电机转了几个单位）
 
-    m_motor.setNeutralMode(NeutralMode.Brake); //这行代码意思是电机通电时锁住
+    m_motor.setNeutralMode(NeutralMode.Brake); 
+    m_motor2.setNeutralMode(NeutralMode.Brake);//这行代码意思是电机通电时锁住
   }
 
   @Override
@@ -56,6 +58,7 @@ public class ArmSubsystem extends ProfiledPIDSubsystem {
     // Add the feedforward to the PID output to get the motor output
     double maxGravityFF = 0.07;  //这是理想状态下，机械臂水平时克服重力维持稳定所需要的output
     m_motor.set(ControlMode.MotionMagic, setpoint.position, DemandType.ArbitraryFeedForward, maxGravityFF * cosineScalar);
+    m_motor2.follow(m_motor);
     //                这是模式（设定目标）      目标值                  额外需要的模式                 需要在output上加的值
     
   }

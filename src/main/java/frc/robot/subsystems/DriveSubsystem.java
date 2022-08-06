@@ -239,7 +239,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleState1 = new SwerveModuleState(0, angle1);
     var angle2 = new Rotation2d(-1.0,1.0);
     var swerveModuleState2 = new SwerveModuleState(0, angle2);
-    
+  
     m_frontLeft.setDesiredState(swerveModuleState2);
     m_frontLeft.setAngle(angle2.getDegrees());
     m_frontRight.setDesiredState(swerveModuleState1);
@@ -358,6 +358,7 @@ public class DriveSubsystem extends SubsystemBase {
     talon_config.slot0.kF=kF;
     return talon_config;
   }
+  
   public static TalonSRXConfiguration getTurnPIDconfig(double kP, double kI, double kD, double kF){
     TalonSRXConfiguration turning_config = new TalonSRXConfiguration();
     turning_config.slot0.kP = kP;
