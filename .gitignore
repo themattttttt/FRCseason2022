@@ -164,3 +164,6 @@ bin/
 .gradle/7.3.3/fileHashes/fileHashes.lock
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
 .gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/7.3.3/checksums/checksums.lock
+.gradle/7.3.3/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock

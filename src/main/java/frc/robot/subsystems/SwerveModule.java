@@ -138,15 +138,15 @@ public class SwerveModule {
     turn_config.neutralDeadband = 0.05;
 
     	/* Set acceleration and vcruise velocity - see documentation */
-    //turn_config.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
-    //turn_config.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
+    turn_config.motionCruiseVelocity = ModuleConstants.kMaxModuleAngularSpeed;
+    turn_config.motionAcceleration = ModuleConstants.kMaxModuleAngularAcceleration;
 
     //set configs
     m_turningMotor.configAllSettings(turn_config);
 
     /* Set relevant frame periods to be at least as fast as periodic rate */
-	  m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-		//m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20);
+	  //m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+		m_turningMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20);
 
     //Set neutral mode to brake to self lock the motor when power on
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
@@ -181,7 +181,7 @@ public class SwerveModule {
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
     double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
-    m_turningMotor.set(ControlMode.Position, turnOutput);
+    m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
 
 

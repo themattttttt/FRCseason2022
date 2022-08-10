@@ -30,6 +30,10 @@ import frc.robot.commands.ArmBackwardTempCommand;
 import frc.robot.commands.ArmForwardTempCommand;
 import frc.robot.commands.DefenseOCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ElevatorDownCommand;
+import frc.robot.commands.ElevatorUpCommand;
+import frc.robot.commands.IntakeNegativeCommand;
+import frc.robot.commands.IntakePositiveCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterOutCommand;
 import frc.robot.commands.TurnCommand;
@@ -86,6 +90,12 @@ public class RobotContainer {
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
 
+  private final Trigger elevatorUpTrigger = new Trigger(()->m_operateController.getLeftY()<-0.1);
+  private final Trigger elevatorDownTrigger = new Trigger(()->m_operateController.getLeftY()>0.1);
+  private final Trigger intakePositiveTrigger = new Trigger(()->m_operateController.getPOV()==0);
+  private final Trigger intakeNegativeTrigger = new Trigger(()->m_operateController.getPOV()==180);
+
+
  //private final JoystickButton intakeInButton = new JoystickButton(m_operateController,XboxController.)
 
   public final Command resetCommand = new RunCommand(()->m_robotDrive.setAllToZero());
@@ -125,22 +135,12 @@ public class RobotContainer {
       ShootOutButton.whenHeld(new ShooterOutCommand(m_shooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
+
+      elevatorUpTrigger.whenActive(new ElevatorUpCommand(m_elevator));
+      elevatorDownTrigger.whenActive(new ElevatorDownCommand(m_elevator));
       
-      if (m_operateController.getPOV()==0){
-         m_intake.operate(IntakeConstants.kPositivePercentageOutput);
-      }
-      else if(m_operateController.getPOV()==180){
-        m_intake.operate(IntakeConstants.kNegativePercentageOutput);
-      }
-
-
-
-      if(m_operateController.getLeftY()<-0.1){
-        m_elevator.operate(ElevatorConstants.kElevatorUpSpeed);
-      }
-      else if(m_operateController.getLeftY()>0.1){
-        m_elevator.operate(ElevatorConstants.kElevatorDownSpeed);
-      }
+      intakePositiveTrigger.whenActive(new IntakePositiveCommand(m_intake));
+      intakeNegativeTrigger.whenActive(new IntakeNegativeCommand(m_intake));
 
 
 
