@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import java.lang.Object;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -79,7 +80,7 @@ public class RobotContainer {
   private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
   private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
   private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
-  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);3
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
@@ -195,4 +196,32 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
   }
+
+  public Command getTestCommand(){
+    final Command Wait = new WaitCommand(3.0);
+    final Command TestDriveOCommand = new DefenseOCommand(m_robotDrive).withTimeout(3.0);
+    final Command TestArmForwardTempCommand = new ArmForwardTempCommand(m_arm).withTimeout(1.0);
+    final Command TestArmBackwadTempCmmand = new ArmBackwardTempCommand(m_arm).withTimeout(1.0);
+    final Command TestElevatorUpCommand = new ElevatorUpCommand(m_elevator).withTimeout(1.0);
+    final Command TestElevatorDownCommand = new ElevatorDownCommand(m_elevator).withTimeout(1.0);
+    final Command TestPneumaticReleaseCommand = new PneumaticReleaseCommand(m_pnematic);
+    final Command TestPneumaticRetractCommand = new PneumaticRetractCommand(m_pnematic);
+    final Command TestIntakePositiveCommand = new IntakePositiveCommand(m_intake).withTimeout(1.0);
+    final Command TestIntakeNegativeCommand = new IntakeNegativeCommand(m_intake).withTimeout(1.0);
+    final Command TestShoooooooooter = new ShooterCommand(m_shooter).withTimeout(1.0);
+    
+    final Command TestCommand = TestDriveOCommand.andThen(Wait).
+                                                  andThen(TestArmForwardTempCommand).andThen(Wait).
+                                                  andThen(TestArmBackwadTempCmmand).andThen(Wait).
+                                                  andThen(TestElevatorUpCommand).andThen(Wait).
+                                                  andThen(TestElevatorDownCommand).andThen(Wait).
+                                                  andThen(TestPneumaticReleaseCommand).andThen(Wait).
+                                                  andThen(TestIntakePositiveCommand).andThen(Wait).
+                                                  andThen(TestIntakeNegativeCommand).andThen(Wait).
+                                                  andThen(TestPneumaticRetractCommand).andThen(Wait).
+                                                  andThen(TestShoooooooooter);
+
+    return TestCommand;
+  }
+
 }
