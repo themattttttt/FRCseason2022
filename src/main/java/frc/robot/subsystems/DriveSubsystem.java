@@ -183,7 +183,8 @@ public class DriveSubsystem extends SubsystemBase {
     ///SmartDashboard.putNumber("4 speed", swerveModuleStates[3].speedMetersPerSecond);
     SmartDashboard.putNumber("4 kf", PIDConfigConstants.kfRearRightDrive);
     //SmartDashboard.putNumber("m_rearRight_angle", swerveModuleStates[3].angle.getDegrees());
-    
+    SmartDashboard.putNumber("2 Sensor Position", m_frontLeft.getDriveSensorPosition());
+    SmartDashboard.putNumber("4 Sensor Position", m_rearRight.getDriveSensorPosition());
   }
   
 
