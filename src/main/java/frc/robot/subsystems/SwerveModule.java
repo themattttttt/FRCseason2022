@@ -35,7 +35,7 @@ public class SwerveModule {
   private final CANCoder m_turningEncoder;
 
   private double m_setAngle = 0.0;
-  private double m_optimizedAngle = 0.0;
+  //private double m_optimizedAngle = 0.0;
   private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
@@ -78,7 +78,7 @@ public class SwerveModule {
      * A quick example here: if the wheel rotates 1 full circle, the encoder read will change by 8/3 circles, which is +2/3*360 or -1/3*360 in absolute value
      * in short, the increment of absolute value can only be 0, 120 or 240.
      */
-    SmartDashboard.putNumber("diff", diff);
+    //SmartDashboard.putNumber("diff", diff);
     diff = (diff+135) % 45;
     if(diff > 22.5){
       diff = diff-45;
@@ -103,7 +103,7 @@ public class SwerveModule {
     m_driveMotor.configAllSettings(drive_config);
     m_driveMotor.setSensorPhase(true);
     m_driveMotor.setInverted(driveEncoderReversed);
-    m_driveMotor.setNeutralMode(NeutralMode.Brake);
+    m_driveMotor.setNeutralMode(NeutralMode.Coast);
 
     turn_config.remoteFilter0 = new FilterConfiguration();
     turn_config.remoteFilter0.remoteSensorDeviceID = turningEncoderPort;
@@ -129,9 +129,9 @@ public class SwerveModule {
     //First, we configure the soft limits on the motor controller 
     //so that they’re enabled and have values for the forward and reverse limits
     turn_config.forwardSoftLimitEnable = true;
-    turn_config.forwardSoftLimitThreshold = 2*ModuleConstants.kTurningMax;
+    turn_config.forwardSoftLimitThreshold = ModuleConstants.kTurningMax;
     turn_config.reverseSoftLimitEnable = true;
-    turn_config.reverseSoftLimitThreshold = -2*ModuleConstants.kTurningMax;
+    turn_config.reverseSoftLimitThreshold = -ModuleConstants.kTurningMax;
 
     /* set deadband to super small 0.001 (0.1 %).
 			The default deadband is 0.04 (4 %) */
@@ -168,7 +168,7 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
-    m_optimizedAngle = state.angle.getDegrees();
+    m_setAngle = state.angle.getDegrees();
     setTurnDesiredState(state);
     setDesiredSpeed(state.speedMetersPerSecond);
     if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
@@ -211,8 +211,8 @@ public class SwerveModule {
   }
 
   public void setToZero() {
-    SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0.0));
-    setTurnDesiredState(state);
+    m_turningMotor.set(ControlMode.MotionMagic,0.0);
+    m_driveMotor.set(ControlMode.Velocity, 0.0);
   }
 
   
@@ -220,7 +220,7 @@ public class SwerveModule {
    * @param setAngle angle in degress
   */
   public boolean atSetAngle(){
-    double diff = Math.abs(m_turningEncoder.getPosition()-m_optimizedAngle);
+    double diff = Math.abs(m_turningEncoder.getPosition()-m_setAngle);
     return diff < ModuleConstants.kTurnToleranceDeg;
   }
   public void setAngle(double setAngle){

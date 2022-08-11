@@ -21,7 +21,7 @@ public class DefenseOCommand extends CommandBase {
   }
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("O reached", m_drive.getModulesAtAngle());
+    //SmartDashboard.putBoolean("O reached", m_drive.getModulesAtAngle());
     m_drive.simpleturningO();
   }
 

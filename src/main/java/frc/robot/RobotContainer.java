@@ -144,11 +144,11 @@ public class RobotContainer {
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
       LightButton.whenHeld(new LimelightChangeLightCommand(m_limelight));
 
-      elevatorUpTrigger.whenActive(new ElevatorUpCommand(m_elevator));
-      elevatorDownTrigger.whenActive(new ElevatorDownCommand(m_elevator));
+      elevatorUpTrigger.whileActiveContinuous(new ElevatorUpCommand(m_elevator));
+      elevatorDownTrigger.whileActiveContinuous(new ElevatorDownCommand(m_elevator));
       
-      intakePositiveTrigger.whenActive(new IntakePositiveCommand(m_intake));
-      intakeNegativeTrigger.whenActive(new IntakeNegativeCommand(m_intake));
+      intakePositiveTrigger.whileActiveContinuous(new IntakePositiveCommand(m_intake));
+      intakeNegativeTrigger.whileActiveContinuous(new IntakeNegativeCommand(m_intake));
 
       TrackTrigger.whileActiveContinuous(new LimelightAutotrackCommand(m_limelight, m_robotDrive));
 

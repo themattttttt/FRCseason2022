@@ -59,14 +59,15 @@ public class TurnCommand extends CommandBase {
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Set Angle", m_degree);
-    SmartDashboard.putNumber("Swerve 1 Angle", m_drive.getModuleStates()[0].angle.getDegrees());
-    SmartDashboard.putNumber("Swerve 2 Angle", m_drive.getModuleStates()[1].angle.getDegrees());
-    SmartDashboard.putNumber("Swerve 3 Angle", m_drive.getModuleStates()[2].angle.getDegrees());
-    SmartDashboard.putNumber("Swerve 4 Angle", m_drive.getModuleStates()[3].angle.getDegrees());
-    SmartDashboard.putBoolean("Angle reached", isFinished());
-    SmartDashboard.putNumber("x value", m_xSpeed);
-    SmartDashboard.putNumber("y value", m_ySpeed);
+    //SmartDashboard.putNumber("Set Angle", m_degree);
+    //SmartDashboard.putNumber("Swerve 1 Angle", m_drive.getModuleStates()[0].angle.getDegrees());
+    //SmartDashboard.putNumber("Swerve 2 Angle", m_drive.getModuleStates()[1].angle.getDegrees());
+    //SmartDashboard.putNumber("Swerve 3 Angle", m_drive.getModuleStates()[2].angle.getDegrees());
+    //SmartDashboard.putNumber("Swerve 4 Angle", m_drive.getModuleStates()[3].angle.getDegrees());
+    //SmartDashboard.putBoolean("Angle reached", isFinished());
+    //SmartDashboard.putNumber("x value", m_xSpeed);
+    //SmartDashboard.putNumber("y value", m_ySpeed);
+    m_drive.setAllToZero();
     m_drive.driveturning(m_xSpeed, m_ySpeed);
   }
 
