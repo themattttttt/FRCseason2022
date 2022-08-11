@@ -12,7 +12,7 @@ public class ArmForwardTempCommand extends CommandBase{
     }
     @Override
     public void execute(){
-        m_arm.operate(ArmConstants.kArmForwardSpeed);
+        m_arm.operate(ArmConstants.kArmForwardPos);
     }
 
     @Override
