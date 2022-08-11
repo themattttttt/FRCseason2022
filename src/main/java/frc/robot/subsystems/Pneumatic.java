@@ -26,10 +26,10 @@ public class Pneumatic extends SubsystemBase {
         String configtype = m_pcmCompressor.getConfigType().name();
         double current = m_pcmCompressor.getCurrent();
 
-        SmartDashboard.putString("type", configtype);
-        SmartDashboard.putBoolean("enabled", enabled);
-        SmartDashboard.putBoolean("ps found",pressureSwitch);
-        SmartDashboard.putNumber("current", current);
+        //SmartDashboard.putString("type", configtype);
+        //SmartDashboard.putBoolean("enabled", enabled);
+        //SmartDashboard.putBoolean("ps found",pressureSwitch);
+        //SmartDashboard.putNumber("current", current);
 
     }
     public void Release()

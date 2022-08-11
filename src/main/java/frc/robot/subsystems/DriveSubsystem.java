@@ -171,14 +171,18 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
     
-    SmartDashboard.putNumber("m_frontLeft_speed", swerveModuleStates[0].speedMetersPerSecond);
-    SmartDashboard.putNumber("m_frontLeft_angle", swerveModuleStates[0].angle.getDegrees());
-    SmartDashboard.putNumber("m_frontRight_speed", swerveModuleStates[1].speedMetersPerSecond);
-    SmartDashboard.putNumber("m_frontRight_angle", swerveModuleStates[1].angle.getDegrees());
-    SmartDashboard.putNumber("m_rearLeft_speed", swerveModuleStates[2].speedMetersPerSecond);
-    SmartDashboard.putNumber("m_rearLeft_angle", swerveModuleStates[2].angle.getDegrees());
-    SmartDashboard.putNumber("m_rearRight_speed", swerveModuleStates[3].speedMetersPerSecond);
-    SmartDashboard.putNumber("m_rearRight_angle", swerveModuleStates[3].angle.getDegrees());
+    //SmartDashboard.putNumber("1 speed", swerveModuleStates[0].speedMetersPerSecond);
+    SmartDashboard.putNumber("1 kf", PIDConfigConstants.kfRearLeftDrive);
+    //SmartDashboard.putNumber("m_frontLeft_angle", swerveModuleStates[0].angle.getDegrees());
+    //SmartDashboard.putNumber("2 speed", swerveModuleStates[1].speedMetersPerSecond);
+    SmartDashboard.putNumber("2 kf", PIDConfigConstants.kfFrontLeftDrive);
+    //SmartDashboard.putNumber("m_frontRight_angle", swerveModuleStates[1].angle.getDegrees());
+    //SmartDashboard.putNumber("3 speed", swerveModuleStates[2].speedMetersPerSecond);
+    SmartDashboard.putNumber("3 kf", PIDConfigConstants.kfFrontRightDrive);
+   // SmartDashboard.putNumber("m_rearLeft_angle", swerveModuleStates[2].angle.getDegrees());
+    ///SmartDashboard.putNumber("4 speed", swerveModuleStates[3].speedMetersPerSecond);
+    SmartDashboard.putNumber("4 kf", PIDConfigConstants.kfRearRightDrive);
+    //SmartDashboard.putNumber("m_rearRight_angle", swerveModuleStates[3].angle.getDegrees());
     
   }
   
@@ -305,10 +309,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public boolean getModulesAtAngle(){
     
-    SmartDashboard.putBoolean("Swerve 1 Angle State", m_rearLeft.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 2 Angle State", m_frontLeft.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 3 Angle State", m_frontRight.atSetAngle());
-    SmartDashboard.putBoolean("Swerve 4 Angle State", m_rearRight.atSetAngle());
+    //SmartDashboard.putBoolean("Swerve 1 Angle State", m_rearLeft.atSetAngle());
+    //SmartDashboard.putBoolean("Swerve 2 Angle State", m_frontLeft.atSetAngle());
+    //SmartDashboard.putBoolean("Swerve 3 Angle State", m_frontRight.atSetAngle());
+    //SmartDashboard.putBoolean("Swerve 4 Angle State", m_rearRight.atSetAngle());
     
     if (!m_frontLeft.atSetAngle()){
       return false;

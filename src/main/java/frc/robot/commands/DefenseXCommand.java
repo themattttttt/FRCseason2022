@@ -24,7 +24,7 @@ public class DefenseXCommand extends CommandBase {
   }
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("X reached", m_drive.getModulesAtAngle());
+    //SmartDashboard.putBoolean("X reached", m_drive.getModulesAtAngle());
     m_drive.simpleturningX();
   }
 

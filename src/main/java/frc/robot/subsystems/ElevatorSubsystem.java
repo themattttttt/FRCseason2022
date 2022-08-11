@@ -13,7 +13,8 @@ public class ElevatorSubsystem extends SubsystemBase{
     private final TalonFX m_motor;
     TalonFXConfiguration drive_config;
 
-    public ElevatorSubsystem(){
+    public 
+    ElevatorSubsystem(){
         this.m_motor = new TalonFX(ElevatorConstants.kElevatorMotorPort);
         this.drive_config = getDrivePIDconfig(
             ElevatorConstants.kpElevator,

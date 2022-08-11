@@ -39,7 +39,7 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute(){
     m_drive.drivestraight(m_speed);
-    SmartDashboard.putNumber("Set Speed", m_speed);
+    //SmartDashboard.putNumber("Set Speed", m_speed);
     SmartDashboard.putNumber("Swerve 1 speed", m_drive.getModuleStates()[0].speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve 2 speed", m_drive.getModuleStates()[1].speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve 3 speed", m_drive.getModuleStates()[2].speedMetersPerSecond);

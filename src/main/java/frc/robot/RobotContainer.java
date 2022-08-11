@@ -80,7 +80,7 @@ public class RobotContainer {
   private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
   private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
   private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
-  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);3
+  private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
@@ -137,11 +137,11 @@ public class RobotContainer {
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
 
-      elevatorUpTrigger.whenActive(new ElevatorUpCommand(m_elevator));
-      elevatorDownTrigger.whenActive(new ElevatorDownCommand(m_elevator));
+      elevatorUpTrigger.whileActiveContinuous(new ElevatorUpCommand(m_elevator));
+      elevatorDownTrigger.whileActiveContinuous(new ElevatorDownCommand(m_elevator));
       
-      intakePositiveTrigger.whenActive(new IntakePositiveCommand(m_intake));
-      intakeNegativeTrigger.whenActive(new IntakeNegativeCommand(m_intake));
+      intakePositiveTrigger.whileActiveContinuous(new IntakePositiveCommand(m_intake));
+      intakeNegativeTrigger.whileActiveContinuous(new IntakeNegativeCommand(m_intake));
 
 
 
