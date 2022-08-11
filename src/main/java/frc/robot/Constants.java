@@ -187,11 +187,11 @@ public final class Constants {
       public static final double kIArmController = 0;
       public static final double kFArmController = 0.25;
 
+
       public static final double kArmBackwardPos = 300;
       public static final double kArmForwardPos = -300;
-      public static final double kArmSpeed = 1500;
+      public static final double KArmVelocity = 1500;
       public static final double kArmAcceleration = 1500;
-    
 
       //public static final double kPArmController = 0;
       public static final double kSVolts = 1;
@@ -231,5 +231,17 @@ public final class Constants {
   public static final class OperateConstants{
     public static final int kLowerShooterChannel = 31;
     public static final int kUpperShooterChannel = 32;
+  }
+
+  public static final class LimelightConstants{
+    public static final double kHeightOfTheTarget = 0.0;
+    public static final double kHeightOfTheLimelight = 0.0;
+    public static final double kAngleOfTheLimilight = 0.0;
+    public static final double kDistanceWithTargetMax = 0.0;
+    public static final double kDistanceWithTargetMin = 0.0;
+    public static final double kDistanceXMax = 0.0;
+    public static final double kDistanceXMin = 0.0;
+    public static final double kLimelighttime = 0.0;
+
   }
 }

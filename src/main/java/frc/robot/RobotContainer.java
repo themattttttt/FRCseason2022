@@ -38,12 +38,15 @@ import frc.robot.commands.IntakePositiveCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterOutCommand;
 import frc.robot.commands.TurnCommand;
+import frc.robot.commands.LimelightAutotrackCommand;
+import frc.robot.commands.LimelightChangeLightCommand;
 import frc.robot.subsystems.ArmTempSystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
 import frc.robot.subsystems.Pneumatic;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.PneumaticRetractCommand;
 import frc.robot.commands.PneumaticReleaseCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -68,6 +71,7 @@ public class RobotContainer {
   private final ArmTempSystem m_arm = new ArmTempSystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  private final LimelightSubsystem m_limelight = new LimelightSubsystem();
 
 
   // The driver's controller
@@ -75,8 +79,8 @@ public class RobotContainer {
   public final XboxController m_operateController = new XboxController(OIConstants.kOperateControllerPort);
 
   //Create buttons
-  private final JoystickButton XButton=new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
-  private final JoystickButton OButton=new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
+  private final JoystickButton XButton = new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
+  private final JoystickButton OButton = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
   private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
   private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
   private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
@@ -87,6 +91,7 @@ public class RobotContainer {
   private final JoystickButton ShootOutButton = new JoystickButton(m_operateController, XboxController.Button.kA.value);
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
+  private final JoystickButton LightButton = new JoystickButton(m_operateController, XboxController.Button.kStart.value);
 
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
@@ -95,6 +100,7 @@ public class RobotContainer {
   private final Trigger elevatorDownTrigger = new Trigger(()->m_operateController.getLeftY()>0.1);
   private final Trigger intakePositiveTrigger = new Trigger(()->m_operateController.getPOV()==0);
   private final Trigger intakeNegativeTrigger = new Trigger(()->m_operateController.getPOV()==180);
+  private final Trigger TrackTrigger = new Trigger(()-> m_operateController.getLeftTriggerAxis()> 0.1);
 
 
  //private final JoystickButton intakeInButton = new JoystickButton(m_operateController,XboxController.)
@@ -136,12 +142,15 @@ public class RobotContainer {
       ShootOutButton.whenHeld(new ShooterOutCommand(m_shooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
+      LightButton.whenHeld(new LimelightChangeLightCommand(m_limelight));
 
       elevatorUpTrigger.whileActiveContinuous(new ElevatorUpCommand(m_elevator));
       elevatorDownTrigger.whileActiveContinuous(new ElevatorDownCommand(m_elevator));
       
       intakePositiveTrigger.whileActiveContinuous(new IntakePositiveCommand(m_intake));
       intakeNegativeTrigger.whileActiveContinuous(new IntakeNegativeCommand(m_intake));
+
+      TrackTrigger.whileActiveContinuous(new LimelightAutotrackCommand(m_limelight, m_robotDrive));
 
 
 
