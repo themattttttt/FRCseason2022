@@ -35,7 +35,6 @@ public class SwerveModule {
 
   private double m_setAngle = 0.0;
   //private double m_optimizedAngle = 0.0;
-  private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
    *
@@ -170,12 +169,6 @@ public class SwerveModule {
     m_setAngle = state.angle.getDegrees();
     setTurnDesiredState(state);
     setDesiredSpeed(state.speedMetersPerSecond);
-    if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
-      m_Inverted = true;
-    }
-    else{
-      m_Inverted = false;
-    }
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
@@ -195,9 +188,6 @@ public class SwerveModule {
   }
 
   private void setDesiredSpeed(double driveOutput) {
-    if(m_Inverted){
-      driveOutput *= -1.0;
-    }
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
