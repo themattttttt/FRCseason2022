@@ -30,14 +30,12 @@ import frc.robot.commands.DefenseXCommand;
 import frc.robot.commands.ArmBackwardTempCommand;
 import frc.robot.commands.ArmForwardTempCommand;
 import frc.robot.commands.DefenseOCommand;
-import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDownCommand;
 import frc.robot.commands.ElevatorUpCommand;
 import frc.robot.commands.IntakeNegativeCommand;
 import frc.robot.commands.IntakePositiveCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterOutCommand;
-import frc.robot.commands.TurnCommand;
 import frc.robot.commands.LimelightAutotrackCommand;
 import frc.robot.commands.LimelightChangeLightCommand;
 import frc.robot.subsystems.ArmTempSystem;
@@ -81,10 +79,12 @@ public class RobotContainer {
   //Create buttons
   private final JoystickButton XButton = new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value);
   private final JoystickButton OButton = new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value);
+  /*
   private final JoystickButton rightButton = new JoystickButton(m_driverController, XboxController.Button.kB.value);
   private final JoystickButton leftButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
   private final JoystickButton forwardButton = new JoystickButton(m_driverController, XboxController.Button.kY.value);
   private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
+  */
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
@@ -101,6 +101,11 @@ public class RobotContainer {
   private final Trigger intakePositiveTrigger = new Trigger(()->m_operateController.getPOV()==0);
   private final Trigger intakeNegativeTrigger = new Trigger(()->m_operateController.getPOV()==180);
   private final Trigger TrackTrigger = new Trigger(()-> m_operateController.getLeftTriggerAxis()> 0.1);
+
+  private final Trigger forwardTrigger = new Trigger(()->m_driverController.getPOV() == 0);
+  private final Trigger backwardTrigger = new Trigger(()->m_driverController.getPOV() == 180);
+  private final Trigger leftTrigger = new Trigger(()->m_driverController.getPOV() == 270);
+  private final Trigger rightTrigger = new Trigger(()->m_driverController.getPOV() == 90);
 
 
  //private final JoystickButton intakeInButton = new JoystickButton(m_operateController,XboxController.)
@@ -130,10 +135,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
       OButton.whenHeld(new DefenseOCommand(m_robotDrive));
-      rightButton.whenHeld(new TurnCommand(0,-1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      leftButton.whenHeld(new TurnCommand(0,1,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      forwardButton.whenHeld(new TurnCommand(0,0,m_robotDrive).andThen(new DriveCommand(1.0, m_robotDrive)));
-      backwardButton.whenHeld(new TurnCommand(1,0,m_robotDrive).andThen(new DriveCommand(-1.0, m_robotDrive)));
+      rightTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(0, -1, 0, false), m_robotDrive));
+      leftTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(0, 1, 0, false), m_robotDrive));
+      forwardTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(1, 0, 0, false), m_robotDrive));
+      backwardTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(-1, 0, 0, false), m_robotDrive));
       startButton.whenHeld(resetCommand);
       ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));

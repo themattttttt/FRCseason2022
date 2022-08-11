@@ -186,42 +186,6 @@ public class DriveSubsystem extends SubsystemBase {
     
   }
   
-  /**
-   * 
-   * @param Speed
-   */
-  @SuppressWarnings("ParameterName")
-  public void drivestraight(double Speed) {
-    if(Speed > DriveConstants.kMaxSpeedMetersPerSecond){
-      Speed = DriveConstants.kMaxSpeedMetersPerSecond;
-    }
-    else if (Speed < -DriveConstants.kMaxSpeedMetersPerSecond){
-      Speed = -DriveConstants.kMaxSpeedMetersPerSecond;
-    }
-    m_frontLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontLeft.getSetAngle()))));
-    m_frontRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_frontRight.getSetAngle()))));
-    m_rearLeft.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearLeft.getSetAngle()))));
-    m_rearRight.setDesiredState(new SwerveModuleState(Speed, new Rotation2d(Math.toRadians(m_rearRight.getSetAngle()))));
-  }
-
-
-  
-  public void driveturning(double xSpeed, double ySpeed) {
-    if(Math.abs(xSpeed) < JoystickConstants.kReadEpsilon){
-      xSpeed = 0.0;
-    }
-    if(Math.abs(ySpeed) < JoystickConstants.kReadEpsilon){
-      ySpeed = 0.0;
-    }
-
-    var angle = new Rotation2d(xSpeed,ySpeed);
-    var swerveModuleState = new SwerveModuleState(0.0, angle);
-    
-    m_frontLeft.setDesiredState(swerveModuleState);
-    m_frontRight.setDesiredState(swerveModuleState);
-    m_rearLeft.setDesiredState(swerveModuleState);
-    m_rearRight.setDesiredState(swerveModuleState);
-  }
 
   public void simpleturningO() {
     var angle1 = new Rotation2d(1.0,1.0);
