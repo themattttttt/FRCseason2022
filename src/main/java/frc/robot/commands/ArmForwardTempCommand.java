@@ -12,7 +12,8 @@ public class ArmForwardTempCommand extends CommandBase{
     }
     @Override
     public void execute(){
-        m_arm.operate(ArmConstants.kArmForwardPos);
+        double ArmForwardPos = ArmConstants.kArmForwardPos + m_arm.getPos();
+        m_arm.operate(ArmForwardPos);
     }
 
     @Override

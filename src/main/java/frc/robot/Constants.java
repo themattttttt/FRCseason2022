@@ -164,6 +164,7 @@ public final class Constants {
   public static final class JoystickConstants{
     public static final double kReadEpsilon = 0.05;
   }
+
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -179,6 +180,7 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
   public static final class ArmConstants{
       public static final int kArmMotorPort = 5;
       public static final int kArmMotorPort2 = 7;
@@ -204,18 +206,20 @@ public final class Constants {
       public static final double kEncoderDistancePerPulse=0;
       public static final double kArmOffsetRads=0;
   }
+
   public static final class IntakeConstants{
     public static final int kIntakeMotorPort = 25;
     public static final double kPositivePercentageOutput = 0.8;
     public static final double kNegativePercentageOutput = -0.8;
   }
+
   public static final class ShooterConstants{
     public static final int kUpperMotorPort = 32;
     public static final int kLowerMotorPort = 31;
-    public static final int  kRPM = 500;
-    public static final double kpShooter = 0.0;
-    public static final double kdShooter = 0.0;
-    public static final double kfShooter = 0.0;
+    public static final int  kRPM = 1000;
+    public static final double kpShooter = 0.00035;
+    public static final double kdShooter = 0.005;
+    public static final double kfShooter = 0.0002;
     public static final double kMaxOutputShooter = 1.0;
     public static final double kMinOutputShooter = -1.0;
     public static final double kUpperMotorOutput = 1.0;
