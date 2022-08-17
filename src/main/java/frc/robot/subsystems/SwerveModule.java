@@ -21,7 +21,6 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.math.trajectory.TrapezoidProfile;
 //import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ModuleConstants;
@@ -36,7 +35,6 @@ public class SwerveModule {
 
   private double m_setAngle = 0.0;
   //private double m_optimizedAngle = 0.0;
-  private boolean m_Inverted = false;
   /**
    * Constructs a SwerveModule.
    *
@@ -79,7 +77,7 @@ public class SwerveModule {
      * in short, the increment of absolute value can only be 0, 120 or 240.
      */
     //SmartDashboard.putNumber("diff", diff);
-    diff = (diff+135) % 45;
+    diff = diff - 45 * Math.ceil(diff/45.0);
     if(diff > 22.5){
       diff = diff-45;
     }
@@ -96,7 +94,7 @@ public class SwerveModule {
     drive_config.diff0Term = FeedbackDevice.IntegratedSensor;
     drive_config.sum0Term = FeedbackDevice.IntegratedSensor;
 
-    drive_config.neutralDeadband = 0.01;
+    drive_config.neutralDeadband = 0.04;
     //config common motor settings
     
 
@@ -154,7 +152,7 @@ public class SwerveModule {
     // Set whether turning encoder should be reversed or not
     m_turningMotor.setSensorPhase(true);
     m_turningMotor.setInverted(true);
-
+  
     /* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
     }
 
@@ -171,12 +169,6 @@ public class SwerveModule {
     m_setAngle = state.angle.getDegrees();
     setTurnDesiredState(state);
     setDesiredSpeed(state.speedMetersPerSecond);
-    if (state.speedMetersPerSecond ==0 && !state.angle.equals(desiredState.angle)){
-      m_Inverted = true;
-    }
-    else{
-      m_Inverted = false;
-    }
   }
 
   private void setTurnDesiredState(SwerveModuleState desiredState) {
@@ -196,9 +188,6 @@ public class SwerveModule {
   }
 
   private void setDesiredSpeed(double driveOutput) {
-    if(m_Inverted){
-      driveOutput *= -1.0;
-    }
     m_driveMotor.set(ControlMode.Velocity, driveOutput);
   }
 
@@ -228,5 +217,9 @@ public class SwerveModule {
   }
   public double getSetAngle(){
     return m_setAngle;
+  }
+
+  public double getDriveSensorPosition(){
+    return m_driveMotor.getSensorCollection().getIntegratedSensorAbsolutePosition();
   }
 }
