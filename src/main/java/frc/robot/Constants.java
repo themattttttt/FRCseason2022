@@ -190,10 +190,10 @@ public final class Constants {
       public static final double kFArmController = 0.25;
 
 
-      public static final double kArmBackwardPos = 300;
-      public static final double kArmForwardPos = -300;
-      public static final double KArmVelocity = 1500;
-      public static final double kArmAcceleration = 1500;
+      public static final double kArmBackwardPos = 500;
+      public static final double kArmForwardPos = -500;
+      public static final double KArmVelocity = 2500;
+      public static final double kArmAcceleration = 2500;
 
       //public static final double kPArmController = 0;
       public static final double kSVolts = 1;
