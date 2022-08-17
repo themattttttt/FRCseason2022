@@ -63,9 +63,11 @@ public class ArmTempSystem extends SubsystemBase{
       }
 
     public void operate(double pos) {
-        m_motor.setSelectedSensorPosition(0);
-        m_motor2.setSelectedSensorPosition(0);
         m_motor.set(TalonFXControlMode.MotionMagic,pos);
         m_motor2.follow(m_motor);
+    }
+
+    public double getPos(){
+        return m_motor.getSensorCollection().getIntegratedSensorPosition();
     }
 }
