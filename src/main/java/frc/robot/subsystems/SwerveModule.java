@@ -77,7 +77,7 @@ public class SwerveModule {
      * in short, the increment of absolute value can only be 0, 120 or 240.
      */
     //SmartDashboard.putNumber("diff", diff);
-    diff = diff - 45 * Math.ceil(diff/45.0);
+    diff = diff - 45 * Math.floor(diff/45.0);
     if(diff > 22.5){
       diff = diff-45;
     }
