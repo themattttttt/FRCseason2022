@@ -116,7 +116,7 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // Run parallel moving, then stop at the end.
-        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),3000*(-m_driverController.getRightTriggerAxis()+ m_driverController.getLeftTriggerAxis()),false)
+        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),12000*(-m_driverController.getRightTriggerAxis()+ m_driverController.getLeftTriggerAxis()),false)
             , m_robotDrive)
     );
   }

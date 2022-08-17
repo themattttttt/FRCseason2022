@@ -75,13 +75,13 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
-    public static final double kMaxSpeedMetersPerSecond = 3000;
+    public static final double kMaxSpeedMetersPerSecond = 8000;
   }
 
   public static final class PIDConfigConstants {
-    public static final double kpRearLeftDrive = 0.0;
+    public static final double kpRearLeftDrive = 0.05;
     public static final double kiRearLeftDrive = 0;
-    public static final double kdRearLeftDrive = 0;
+    public static final double kdRearLeftDrive = 1;
     public static final double kfRearLeftDrive = 0.046695;
 
     public static final double kpRearLeftTurn = 0.3;
@@ -89,9 +89,9 @@ public final class Constants {
     public static final double kdRearLeftTurn = 0.0;
     public static final double kfRearLeftTurn = 0.43;
 
-    public static final double kpFrontLeftDrive = 0.0;
+    public static final double kpFrontLeftDrive = 0.05;
     public static final double kiFrontLeftDrive = 0;
-    public static final double kdFrontLeftDrive = 0;
+    public static final double kdFrontLeftDrive = 1;
     public static final double kfFrontLeftDrive = 0.048;
 
     public static final double kpFrontLeftTurn = 0.255;
@@ -99,25 +99,25 @@ public final class Constants {
     public static final double kdFrontLeftTurn = 1.5;
     public static final double kfFrontLeftTurn = 0.555;
 
-    public static final double kpFrontRightDrive = 0;
+    public static final double kpFrontRightDrive = 0.1;
     public static final double kiFrontRightDrive = 0;
-    public static final double kdFrontRightDrive = 0;
-    public static final double kfFrontRightDrive = 0.058;
+    public static final double kdFrontRightDrive = 3;
+    public static final double kfFrontRightDrive = 0.06;
 
     public static final double kpFrontRightTurn = 0.35;
     public static final double kiFrontRightTurn = 0.05;
     public static final double kdFrontRightTurn = 0.0;
     public static final double kfFrontRightTurn = 0.5;
     
-    public static final double kpRearRightDrive = 0.0;
+    public static final double kpRearRightDrive = 0.075;
     public static final double kiRearRightDrive = 0;
-    public static final double kdRearRightDrive = 0;
-    public static final double kfRearRightDrive = 0.065;
+    public static final double kdRearRightDrive = 2;
+    public static final double kfRearRightDrive = 0.06;
 
-    public static final double kpRearRightTurn = 1.2;
+    public static final double kpRearRightTurn = 0.6;
     public static final double kiRearRightTurn = 0.05;
-    public static final double kdRearRightTurn = 1;
-    public static final double kfRearRightTurn = 0.8;
+    public static final double kdRearRightTurn = 2;
+    public static final double kfRearRightTurn = 0.6;
 
     
     
