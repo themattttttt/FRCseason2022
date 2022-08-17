@@ -12,7 +12,7 @@ public class ArmBackwardTempCommand extends CommandBase{
     }
     @Override
     public void execute(){
-        double ArmBackwardPos = ArmConstants.kArmForwardPos + m_arm.getPos();
+        double ArmBackwardPos = ArmConstants.kArmBackwardPos + m_arm.getPos();
         m_arm.operate(ArmBackwardPos);
     }
 
