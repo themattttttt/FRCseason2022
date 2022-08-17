@@ -10,6 +10,8 @@ public class LimelightAutotrackCommand extends CommandBase{
     private final DriveSubsystem m_drive;
     private double  m_xSpeed;
     private double m_rot;
+    private double m_TargetDistance;
+    private double m_XDistance;
 
     public LimelightAutotrackCommand(LimelightSubsystem limelight, DriveSubsystem drive){
         m_limelight = limelight;
@@ -19,6 +21,8 @@ public class LimelightAutotrackCommand extends CommandBase{
         m_limelight.track();
         m_xSpeed = m_limelight.GetXSpeed();
         m_rot = m_limelight.GetRot();
+        m_TargetDistance = m_limelight.GetDistance();
+        m_XDistance = m_limelight.GetXDistance();
     }
 
     @Override
@@ -32,7 +36,12 @@ public class LimelightAutotrackCommand extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return false;
+        if (m_TargetDistance < LimelightConstants.kDistanceWithTargetMax && m_TargetDistance > LimelightConstants.kDistanceWithTargetMin && m_XDistance < LimelightConstants.kDistanceXMin && m_XDistance >LimelightConstants.kDistanceXMin){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 }

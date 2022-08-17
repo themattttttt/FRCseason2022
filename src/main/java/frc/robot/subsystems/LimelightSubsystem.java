@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
 import java.lang.*;
+import java.lang.annotation.Target;
+
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
+
 import frc.robot.Constants.LimelightConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,14 +38,14 @@ public class LimelightSubsystem extends SubsystemBase {
         return tv;
     }
 
-    public double GetX(){
+    public double GetDistance(){
         Update();
-        return tx;
+        return TargetDistance;
     }
 
-    public double GetY(){
+    public double GetXDistance(){
         Update();
-        return ty;
+        return XDistance;
     }
 
     public void ChangeLight(){
@@ -80,6 +84,8 @@ public class LimelightSubsystem extends SubsystemBase {
             rot = 0;
         }
     }
+
+
 
     public double GetXSpeed(){
         return xSpeed;

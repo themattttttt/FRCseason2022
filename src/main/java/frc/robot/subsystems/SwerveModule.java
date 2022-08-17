@@ -220,6 +220,6 @@ public class SwerveModule {
   }
 
   public double getDriveSensorPosition(){
-    return m_driveMotor.getSensorCollection().getIntegratedSensorAbsolutePosition();
+    return m_driveMotor.getSensorCollection().getIntegratedSensorPosition();
   }
 }
