@@ -38,7 +38,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterOutCommand;
 import frc.robot.commands.LimelightAutotrackCommand;
 import frc.robot.commands.LimelightChangeLightCommand;
-import frc.robot.subsystems.ArmTempSystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsytem;
@@ -67,7 +67,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
   private final Pneumatic m_pnematic = new Pneumatic(0);
-  private final ArmTempSystem m_arm = new ArmTempSystem();
+  private final ArmSubsystem m_arm = new ArmSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final LimelightSubsystem m_limelight = new LimelightSubsystem();
@@ -93,6 +93,7 @@ public class RobotContainer {
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
   private final JoystickButton LightButton = new JoystickButton(m_operateController, XboxController.Button.kStart.value);
+  private final JoystickButton holdButton = new JoystickButton(m_operateController, XboxController.Button.kBack.value);
 
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
@@ -144,6 +145,7 @@ public class RobotContainer {
       startButton.whenHeld(resetCommand);
       ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
+      holdButton.whenHeld(new RunCommand(()->m_arm.hold(), m_arm));
 
       ShootButton.whenHeld(new ShooterCommand(m_shooter));
       ShootOutButton.whenHeld(new ShooterOutCommand(m_shooter));

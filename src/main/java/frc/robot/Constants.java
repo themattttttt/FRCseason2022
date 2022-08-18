@@ -184,16 +184,19 @@ public final class Constants {
   public static final class ArmConstants{
       public static final int kArmMotorPort = 5;
       public static final int kArmMotorPort2 = 7;
-      public static final double kPArmController = 0.0;
+      public static final double kPArmController = 0.035;
       public static final double kDArmController = 0.0;
       public static final double kIArmController = 0;
-      public static final double kFArmController = 0.25;
+      public static final double kFArmController = 0.05;
 
 
-      public static final double kArmBackwardPos = 500;
-      public static final double kArmForwardPos = -500;
-      public static final double KArmVelocity = 2500;
-      public static final double kArmAcceleration = 2500;
+      public static final double kArmBackwardPos = 300;
+      public static final double kArmForwardPos = -300;
+      public static final int KArmVelocity = -1500;
+      public static final double kArmAcceleration = 1500;
+
+      public static final double kArmForwardLimit = -30000;
+      public static final double kArmBackwardLimit = 16500;
 
       //public static final double kPArmController = 0;
       public static final double kSVolts = 1;
@@ -209,8 +212,8 @@ public final class Constants {
 
   public static final class IntakeConstants{
     public static final int kIntakeMotorPort = 25;
-    public static final double kPositivePercentageOutput = 0.8;
-    public static final double kNegativePercentageOutput = -0.8;
+    public static final double kPositivePercentageOutput = 0.5;
+    public static final double kNegativePercentageOutput = -0.5;
   }
 
   public static final class ShooterConstants{
