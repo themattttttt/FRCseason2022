@@ -34,14 +34,15 @@ import frc.robot.commands.ElevatorDownCommand;
 import frc.robot.commands.ElevatorUpCommand;
 import frc.robot.commands.IntakeNegativeCommand;
 import frc.robot.commands.IntakePositiveCommand;
-import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ShooterOutCommand;
+import frc.robot.commands.ShooterUpperCommand;
+import frc.robot.commands.ShooterLowerCommand;
 import frc.robot.commands.LimelightAutotrackCommand;
 import frc.robot.commands.LimelightChangeLightCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.ShooterSubsytem;
+import frc.robot.subsystems.ShooterUpperSubsystem;
+import frc.robot.subsystems.ShooterLowerSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.Pneumatic;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -65,7 +66,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ShooterSubsytem m_shooter = new ShooterSubsytem(OperateConstants.kLowerShooterChannel, OperateConstants.kUpperShooterChannel);
+  private final ShooterUpperSubsystem m_uppershooter = new ShooterUpperSubsystem(OperateConstants.kUpperShooterChannel);
+  private final ShooterLowerSubsystem m_lowershooter = new ShooterLowerSubsystem(OperateConstants.kLowerShooterChannel);
   private final Pneumatic m_pnematic = new Pneumatic(0);
   private final ArmSubsystem m_arm = new ArmSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
@@ -147,8 +149,8 @@ public class RobotContainer {
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
       holdButton.whenHeld(new RunCommand(()->m_arm.hold(), m_arm));
 
-      ShootButton.whenHeld(new ShooterCommand(m_shooter));
-      ShootOutButton.whenHeld(new ShooterOutCommand(m_shooter));
+      ShootButton.whenHeld(new ShooterUpperCommand(m_uppershooter));
+      ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
       LightButton.whenHeld(new LimelightChangeLightCommand(m_limelight));
@@ -169,7 +171,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     final Command AutoDriveCommand = new RunCommand(()->m_robotDrive.drive(0.5, 0, 0, false)).withTimeout(1.0);
     final Command AutoTrack = new LimelightAutotrackCommand(m_limelight,m_robotDrive);
-    final Command AutoShoot = new ShooterCommand(m_shooter);
+    final Command AutoShoot = new ShooterUpperCommand(m_uppershooter);
     return AutoDriveCommand.andThen(AutoTrack).andThen(AutoShoot);
   }
 
@@ -184,7 +186,7 @@ public class RobotContainer {
     final Command TestPneumaticRetractCommand = new PneumaticRetractCommand(m_pnematic);
     final Command TestIntakePositiveCommand = new IntakePositiveCommand(m_intake).withTimeout(1.0);
     final Command TestIntakeNegativeCommand = new IntakeNegativeCommand(m_intake).withTimeout(1.0);
-    final Command TestShoooooooooter = new ShooterCommand(m_shooter).withTimeout(1.0);
+    final Command TestShoooooooooter = new ShooterUpperCommand(m_uppershooter).withTimeout(1.0);
     
     final Command TestCommand = TestDriveOCommand.andThen(Wait).
                                                   andThen(TestArmForwardTempCommand).andThen(Wait).
