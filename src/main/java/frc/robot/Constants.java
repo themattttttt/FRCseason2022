@@ -58,6 +58,8 @@ public final class Constants {
     public static final double kTurnToleranceDeg = 0.0;
     public static final double kTurnRateToleranceDegPerS = 0.0;
 
+    public static final double kAngularSpeed = 12000;
+
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
@@ -245,14 +247,14 @@ public final class Constants {
   }
 
   public static final class LimelightConstants{
-    public static final double kHeightOfTheTarget = 0.0;
-    public static final double kHeightOfTheLimelight = 0.0;
-    public static final double kAngleOfTheLimilight = 0.0;
-    public static final double kDistanceWithTargetMax = 0.0;
-    public static final double kDistanceWithTargetMin = 0.0;
-    public static final double kDistanceXMax = 0.0;
-    public static final double kDistanceXMin = 0.0;
-    public static final double kLimelighttime = 0.0;
+    public static final double kHeightOfTheTarget = 270.0;
+    public static final double kHeightOfTheLimelight = 70.0;
+    public static final double kAngleOfTheLimilight = 42.4;
+    public static final double kDistanceWithTargetMax = 130.0;
+    public static final double kDistanceWithTargetMin = 110.0;
+    public static final double kAngleMax = 5.0;
+    public static final double kAngleMin = -5.0;
+    public static final double kLimelightFactor = 150.0;
 
   }
 }

@@ -5,6 +5,8 @@ import java.lang.annotation.Target;
 
 import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.LimelightConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,23 +21,18 @@ public class LimelightSubsystem extends SubsystemBase {
     private double xSpeed = 0;
     private double rot = 0;
     private double TargetDistance = (LimelightConstants.kHeightOfTheTarget-LimelightConstants.kHeightOfTheLimelight)/Math.tan(Math.toRadians(ty+LimelightConstants.kAngleOfTheLimilight));
-    private double XDistance = (Math.tan(Math.toRadians(tx))*TargetDistance)-14;
+    private double XDistance = (Math.tan(Math.toRadians(tx))*TargetDistance);
 
     public LimelightSubsystem(){
-        m_table.getEntry("ledMode").setNumber(1.0);
+        m_table.getEntry("ledMode").setNumber(0.0);
         Update();
     }
 
     private void Update(){
-        tv = m_table.getEntry("tv").getDouble(0.0);
-        tx = m_table.getEntry("tx").getDouble(0.0);
-        ty = m_table.getEntry("ty").getDouble(0.0);
-        led = m_table.getEntry("ledMode").getDouble(3.0);
-
-
-
-
-        
+        tv = m_table.getEntry("tv").getDouble(0);
+        tx = m_table.getEntry("tx").getDouble(0);
+        ty = m_table.getEntry("ty").getDouble(0);
+        led = m_table.getEntry("ledMode").getDouble(0);
     }
     
     public double Gettarget(){
@@ -57,40 +54,48 @@ public class LimelightSubsystem extends SubsystemBase {
         Update();
         if (led == 3.0){
             m_table.getEntry("ledMode").setNumber(1.0);
+            m_table.getEntry("camMode").setNumber(1.0);
         }
         else{
             m_table.getEntry("ledMode").setNumber(3.0);
+            m_table.getEntry("camMode").setNumber(0.0);
         }
+    }
+
+    public boolean withinRange(){
+        Update();
+        if(TargetDistance < LimelightConstants.kDistanceWithTargetMax && TargetDistance > LimelightConstants.kDistanceWithTargetMin && tx < LimelightConstants.kAngleMax && tx > LimelightConstants.kAngleMin){
+            return true;
+        }
+        return false;
     }
 
     public void track(){
-        if(tv == 1 & TargetDistance > LimelightConstants.kDistanceWithTargetMax){
-            xSpeed = 3000;
-            rot = 0;
-        }
-        else if(tv == 1 & TargetDistance < LimelightConstants.kDistanceWithTargetMin){
-            xSpeed = -3000;
-            rot = 0;
-        }
-        else if(tv == 1 & XDistance > LimelightConstants.kDistanceXMax){
-            xSpeed = 0;
-            rot = Math.atan(XDistance / TargetDistance) / LimelightConstants.kLimelighttime;
-        }
-        else if(tv == 1 & XDistance < LimelightConstants.kDistanceXMin){
-            xSpeed = 0;
-            rot = -Math.atan(XDistance / TargetDistance) / LimelightConstants.kLimelighttime;
-        }
-        else if(tv == 0){
-            xSpeed = 0;
-            rot = 2000;
-        }
-        else {
+        Update();
+
+        if(tv == 1 && withinRange()){
             xSpeed = 0;
             rot = 0;
+        }
+        else if(tv == 1 && TargetDistance < LimelightConstants.kDistanceWithTargetMax && TargetDistance > LimelightConstants.kDistanceWithTargetMin){
+            xSpeed = 0;
+            rot = LimelightConstants.kLimelightFactor * tx;
+            //rot = 3000;
+        }
+        else if(tv == 1){
+            if(TargetDistance > LimelightConstants.kDistanceWithTargetMax){
+                xSpeed = -0.1;
+            }
+            if(TargetDistance < LimelightConstants.kDistanceWithTargetMin){
+                xSpeed = 0.1;
+            }
+            rot = 0;
+        }
+        else{
+            xSpeed = 0;
+            rot = 3000;
         }
     }
-
-
 
     public double GetXSpeed(){
         return xSpeed;

@@ -112,6 +112,7 @@ public class RobotContainer {
   private final Trigger TrackTrigger = new Trigger(()-> m_operateController.getLeftTriggerAxis()> 0.1);
   private final Trigger holdTrigger = new Trigger(()->!(m_operateController.getLeftBumper() || m_operateController.getRightBumper()));
 
+  
   private final Trigger forwardTrigger = new Trigger(()->m_driverController.getPOV() == 0);
   private final Trigger backwardTrigger = new Trigger(()->m_driverController.getPOV() == 180);
   private final Trigger leftTrigger = new Trigger(()->m_driverController.getPOV() == 270);
@@ -132,7 +133,7 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // Run parallel moving, then stop at the end.
-        new RunCommand(()->m_robotDrive.drive(-m_driverController.getLeftY(),m_driverController.getLeftX(),12000*(-m_driverController.getRightTriggerAxis()+ m_driverController.getLeftTriggerAxis()),false)
+        new RunCommand(()->m_robotDrive.drive(-JoystickCurver(m_driverController.getLeftY()),JoystickCurver(m_driverController.getLeftX()),DriveConstants.kAngularSpeed*(-m_driverController.getRightTriggerAxis()+ m_driverController.getLeftTriggerAxis()),false)
             , m_robotDrive)
     );
   }
@@ -143,6 +144,16 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
+
+  private double JoystickCurver(double joystickread){
+      if(joystickread > 0.03){ //magic number is the thresold of the joystick getleftY or getleftX
+        return Math.pow(joystickread, 2);
+      }
+      if (joystickread < -0.03){
+        return - Math.pow(joystickread, 2);
+      }
+      return 0.0;
+  }
 
   private void configureButtonBindings() {
       XButton.whenHeld(new DefenseXCommand(m_robotDrive));
@@ -160,7 +171,7 @@ public class RobotContainer {
       ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
-      LightButton.whenHeld(new LimelightChangeLightCommand(m_limelight));
+      LightButton.whenPressed(new LimelightChangeLightCommand(m_limelight));
 
       elevatorUpTrigger.whileActiveContinuous(new ElevatorUpCommand(m_elevator));
       elevatorDownTrigger.whileActiveContinuous(new ElevatorDownCommand(m_elevator));
