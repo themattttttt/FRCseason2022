@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import frc.robot.Constants.PIDConfigConstants;
@@ -168,6 +169,12 @@ public class DriveSubsystem extends SubsystemBase {
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
+    //m_rearLeft.setTurnDesiredState(swerveModuleStates[2]);
+    //m_rearRight.setTurnDesiredState(swerveModuleStates[3]);
+    //TalonFX master_left_falcon = m_frontLeft.getDriveMotor();
+    //TalonFX master_right_falcon = m_frontRight.getDriveMotor();
+    //m_rearLeft.FollowDrive(master_left_falcon);
+    //m_rearRight.FollowDrive(master_right_falcon);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
     

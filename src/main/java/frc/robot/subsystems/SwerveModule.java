@@ -52,6 +52,14 @@ public class SwerveModule {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity(), new Rotation2d(Math.toRadians(m_turningEncoder.getPosition())));
   }
 
+  public TalonFX getDriveMotor(){
+    return m_driveMotor;
+  }
+
+  public void FollowDrive(TalonFX drive_motor){
+    m_driveMotor.follow(drive_motor);
+  }
+
 
   public SwerveModule(
     int driveMotorChannel,
@@ -171,7 +179,7 @@ public class SwerveModule {
     setDesiredSpeed(state.speedMetersPerSecond);
   }
 
-  private void setTurnDesiredState(SwerveModuleState desiredState) {
+  public void setTurnDesiredState(SwerveModuleState desiredState) {
     double turnOutput = getEncoderUnitFromDegrees(desiredState.angle.getDegrees());
     m_turningMotor.set(ControlMode.MotionMagic, turnOutput);
   }
@@ -220,6 +228,6 @@ public class SwerveModule {
   }
 
   public double getDriveSensorPosition(){
-    return m_driveMotor.getSensorCollection().getIntegratedSensorPosition();
+    return m_driveMotor.getSelectedSensorVelocity();
   }
 }

@@ -31,6 +31,11 @@ public class LimelightSubsystem extends SubsystemBase {
         tx = m_table.getEntry("tx").getDouble(0.0);
         ty = m_table.getEntry("ty").getDouble(0.0);
         led = m_table.getEntry("ledMode").getDouble(3.0);
+
+
+
+
+        
     }
     
     public double Gettarget(){
