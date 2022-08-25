@@ -92,7 +92,7 @@ public final class Constants {
     public static final double kpFrontLeftDrive = 0.05;
     public static final double kiFrontLeftDrive = 0;
     public static final double kdFrontLeftDrive = 1;
-    public static final double kfFrontLeftDrive = 0.048;
+    public static final double kfFrontLeftDrive = 0.046;
 
     public static final double kpFrontLeftTurn = 0.255;
     public static final double kiFrontLeftTurn = 0.08;
@@ -112,7 +112,7 @@ public final class Constants {
     public static final double kpRearRightDrive = 0.075;
     public static final double kiRearRightDrive = 0;
     public static final double kdRearRightDrive = 2;
-    public static final double kfRearRightDrive = 0.06;
+    public static final double kfRearRightDrive = 0.055;
 
     public static final double kpRearRightTurn = 0.6;
     public static final double kiRearRightTurn = 0.05;
@@ -192,7 +192,7 @@ public final class Constants {
 
       public static final double kArmBackwardPos = 300;
       public static final double kArmForwardPos = -300;
-      public static final int KArmVelocity = -1500;
+      public static final double KArmVelocity = -1800;
       public static final double kArmAcceleration = 1500;
 
       public static final double kArmForwardLimit = -30000;

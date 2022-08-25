@@ -27,6 +27,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperateConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.DefenseXCommand;
+import frc.robot.commands.ArmHoldCommand;
 import frc.robot.commands.ArmBackwardTempCommand;
 import frc.robot.commands.ArmForwardTempCommand;
 import frc.robot.commands.DefenseOCommand;
@@ -89,6 +90,7 @@ public class RobotContainer {
   private final JoystickButton backwardButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
   */
   private final JoystickButton startButton = new JoystickButton(m_driverController, XboxController.Button.kStart.value);
+  private final JoystickButton menuButton = new JoystickButton(m_driverController, XboxController.Button.kBack.value);
 
   private final JoystickButton ShootButton = new JoystickButton(m_operateController, XboxController.Button.kB.value);
   private final JoystickButton ShootOutButton = new JoystickButton(m_operateController, XboxController.Button.kA.value);
@@ -100,16 +102,21 @@ public class RobotContainer {
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
 
+
+  //private final JoystickButton driverIntakePositiveButton = new JoystickButton(m_driverController, XboxController.Button.kX.value);
+  //private final JoystickButton driverIntakeNegativeButton = new JoystickButton(m_driverController, XboxController.Button.kA.value);
   private final Trigger elevatorUpTrigger = new Trigger(()->m_operateController.getLeftY()<-0.1);
   private final Trigger elevatorDownTrigger = new Trigger(()->m_operateController.getLeftY()>0.1);
-  private final Trigger intakePositiveTrigger = new Trigger(()->m_operateController.getPOV()==0);
-  private final Trigger intakeNegativeTrigger = new Trigger(()->m_operateController.getPOV()==180);
+  private final Trigger intakePositiveTrigger = new Trigger(()->(m_operateController.getPOV()==0 || m_driverController.getXButton()));
+  private final Trigger intakeNegativeTrigger = new Trigger(()->(m_operateController.getPOV()==180 || m_driverController.getAButton()));
   private final Trigger TrackTrigger = new Trigger(()-> m_operateController.getLeftTriggerAxis()> 0.1);
+  private final Trigger holdTrigger = new Trigger(()->!(m_operateController.getLeftBumper() || m_operateController.getRightBumper()));
 
   private final Trigger forwardTrigger = new Trigger(()->m_driverController.getPOV() == 0);
   private final Trigger backwardTrigger = new Trigger(()->m_driverController.getPOV() == 180);
   private final Trigger leftTrigger = new Trigger(()->m_driverController.getPOV() == 270);
   private final Trigger rightTrigger = new Trigger(()->m_driverController.getPOV() == 90);
+ 
 
 
  //private final JoystickButton intakeInButton = new JoystickButton(m_operateController,XboxController.)
@@ -147,9 +154,9 @@ public class RobotContainer {
       startButton.whenHeld(resetCommand);
       ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
-      holdButton.whenHeld(new RunCommand(()->m_arm.hold(), m_arm));
+      holdTrigger.whileActiveContinuous(new ArmHoldCommand(m_arm));
 
-      ShootButton.whenHeld(new ShooterUpperCommand(m_uppershooter));
+      ShootButton.toggleWhenPressed(new ShooterUpperCommand(m_uppershooter));
       ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));

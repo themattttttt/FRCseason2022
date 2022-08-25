@@ -72,14 +72,14 @@ public class ArmSubsystem extends SubsystemBase{
         return talon_config;
       }
 
-    public void operate(int speed) {
+    public void operate(double speed) {
         m_motor.set(ControlMode.Velocity,speed);
         m_motor2.follow(m_motor);
     }
 
     public void hold(){
-        m_motor.set(TalonFXControlMode.MotionMagic, m_holdPosition);
-        m_motor2.follow(m_motor);
+        m_motor.set(ControlMode.Velocity, 0);
+        m_motor2.set(ControlMode.Velocity, 0);
     }
 
     public void stop(){
