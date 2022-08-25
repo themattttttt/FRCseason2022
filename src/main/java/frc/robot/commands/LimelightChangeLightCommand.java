@@ -14,12 +14,16 @@ public class LimelightChangeLightCommand extends CommandBase{
 
     @Override
     public void execute(){
-        m_limelight.ChangeLight();
+        m_limelight.OpenLight();
     }
 
     @Override
     public boolean isFinished(){
         return false;
+    }
 
+    @Override
+    public void end(boolean interrupted){
+        m_limelight.CloseLight();
     }
 }

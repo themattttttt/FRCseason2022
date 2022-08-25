@@ -27,6 +27,10 @@ public class ShooterLowerSubsystem extends SubsystemBase{
         m_pidController.setReference(ShooterConstants.kRPM, CANSparkMax.ControlType.kVelocity);
     }
 
+    public void LowerSuck(){
+        m_pidController.setReference(ShooterConstants.kRPMSuck, CANSparkMax.ControlType.kVelocity);
+    }
+
     public void LowerStop(){
         m_lowermotor.set(0);
     }

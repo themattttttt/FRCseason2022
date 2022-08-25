@@ -19,7 +19,11 @@ public class ShooterUpperSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("ShooterAppliedOutPut", m_uppermotor.getAnalog(Mode.kRelative).getVelocity()*1000);
     }
 
-    public void Stop(){
+    public void UpperSuck(){
+        m_uppermotor.set(ShooterConstants.kUpperSuckMotorOutput);
+    }
+    
+    public void UpperStop(){
         m_uppermotor.set(0);
     }
 }

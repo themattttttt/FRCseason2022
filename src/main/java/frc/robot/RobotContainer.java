@@ -37,6 +37,7 @@ import frc.robot.commands.IntakeNegativeCommand;
 import frc.robot.commands.IntakePositiveCommand;
 import frc.robot.commands.ShooterUpperCommand;
 import frc.robot.commands.ShooterLowerCommand;
+import frc.robot.commands.ShooterSuckCommand;
 import frc.robot.commands.LimelightAutotrackCommand;
 import frc.robot.commands.LimelightChangeLightCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -97,7 +98,7 @@ public class RobotContainer {
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
   private final JoystickButton LightButton = new JoystickButton(m_operateController, XboxController.Button.kStart.value);
-  private final JoystickButton holdButton = new JoystickButton(m_operateController, XboxController.Button.kBack.value);
+  private final JoystickButton SuckButton = new JoystickButton(m_operateController, XboxController.Button.kBack.value);
 
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
@@ -162,6 +163,7 @@ public class RobotContainer {
       leftTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(0, 1, 0, false), m_robotDrive));
       forwardTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(1, 0, 0, false), m_robotDrive));
       backwardTrigger.whileActiveContinuous(new RunCommand(()->m_robotDrive.drive(-1, 0, 0, false), m_robotDrive));
+
       startButton.whenHeld(resetCommand);
       ReleaseButton.whenHeld(new PneumaticReleaseCommand(m_pnematic));
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
@@ -169,6 +171,7 @@ public class RobotContainer {
 
       ShootButton.toggleWhenPressed(new ShooterUpperCommand(m_uppershooter));
       ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
+      SuckButton.whenHeld(new ShooterSuckCommand(m_uppershooter, m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
       LightButton.toggleWhenPressed(new LimelightChangeLightCommand(m_limelight));
