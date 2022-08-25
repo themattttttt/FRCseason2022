@@ -18,6 +18,6 @@ public class ShooterUpperCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted){
-        m_shooter.Stop();
+        m_shooter.UpperStop();
     }
 }
