@@ -171,7 +171,7 @@ public class RobotContainer {
       ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
-      LightButton.whenPressed(new LimelightChangeLightCommand(m_limelight));
+      LightButton.toggleWhenPressed(new LimelightChangeLightCommand(m_limelight));
 
       elevatorUpTrigger.whileActiveContinuous(new ElevatorUpCommand(m_elevator));
       elevatorDownTrigger.whileActiveContinuous(new ElevatorDownCommand(m_elevator));

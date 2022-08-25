@@ -77,7 +77,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
-    public static final double kMaxSpeedMetersPerSecond = 8000;
+    public static final double kMaxSpeedMetersPerSecond = 12000;
   }
 
   public static final class PIDConfigConstants {
