@@ -68,7 +68,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ShooterUpperSubsystem m_uppershooter = new ShooterUpperSubsystem(OperateConstants.kUpperShooterChannel);
+  private final ShooterUpperSubsystem m_uppershooter = new ShooterUpperSubsystem(OperateConstants.kUpperRightShooterChannel,OperateConstants.kUpperLeftShooterChannel);
   private final ShooterLowerSubsystem m_lowershooter = new ShooterLowerSubsystem(OperateConstants.kLowerShooterChannel);
   private final Pneumatic m_pnematic = new Pneumatic(0);
   private final ArmSubsystem m_arm = new ArmSubsystem();

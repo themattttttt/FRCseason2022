@@ -219,16 +219,15 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static final int kUpperMotorPort = 32;
     public static final int kLowerMotorPort = 31;
-    public static final int  kRPM = 1000;
+    public static final int kRPM = 1000;
     public static final int kRPMSuck = -1000;
     public static final double kpShooter = 0.00035;
     public static final double kdShooter = 0.005;
     public static final double kfShooter = 0.0002;
     public static final double kMaxOutputShooter = 1.0;
     public static final double kMinOutputShooter = -1.0;
-    public static final double kUpperMotorOutput = 1.0;
+    public static final double kUpperMotorOutput = 0.2;
     public static final double kUpperSuckMotorOutput = -0.5;
 
   }
@@ -245,7 +244,8 @@ public final class Constants {
 
   public static final class OperateConstants{
     public static final int kLowerShooterChannel = 31;
-    public static final int kUpperShooterChannel = 32;
+    public static final int kUpperRightShooterChannel = 32;
+    public static final int kUpperLeftShooterChannel = 33;
   }
 
   public static final class LimelightConstants{

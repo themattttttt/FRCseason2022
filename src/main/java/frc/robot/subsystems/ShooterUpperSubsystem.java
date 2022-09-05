@@ -8,22 +8,30 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;;
 
 public class ShooterUpperSubsystem extends SubsystemBase{
-    private final CANSparkMax m_uppermotor;
+    private final CANSparkMax m_uppermotorRight;
+    private final CANSparkMax m_uppermotorLeft;
 
-    public ShooterUpperSubsystem(int upperID){
-        m_uppermotor = new CANSparkMax(ShooterConstants.kUpperMotorPort,MotorType.kBrushless);
+    public ShooterUpperSubsystem(int upperRightID,int upperLeftID){
+        m_uppermotorRight = new CANSparkMax(upperRightID,MotorType.kBrushless);
+        m_uppermotorLeft = new CANSparkMax(upperLeftID,MotorType.kBrushless);
+        m_uppermotorLeft.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        m_uppermotorRight.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
     }
 
     public void UpperShoot(){
-        m_uppermotor.set(ShooterConstants.kUpperMotorOutput);
-        SmartDashboard.putNumber("ShooterAppliedOutPut", m_uppermotor.getAnalog(Mode.kRelative).getVelocity()*1000);
+        m_uppermotorRight.set(ShooterConstants.kUpperMotorOutput);
+        m_uppermotorLeft.follow(m_uppermotorRight, true);
+        SmartDashboard.putNumber("ShooterAppliedOutPut", m_uppermotorRight.getAnalog(Mode.kRelative).getVelocity()*1000);
     }
 
     public void UpperSuck(){
-        m_uppermotor.set(ShooterConstants.kUpperSuckMotorOutput);
+        m_uppermotorRight.set(ShooterConstants.kUpperSuckMotorOutput);
+        m_uppermotorLeft.follow(m_uppermotorRight, true);
     }
     
     public void UpperStop(){
-        m_uppermotor.set(0);
+        m_uppermotorRight.set(0);
+        m_uppermotorLeft.set(0);
     }
 }
