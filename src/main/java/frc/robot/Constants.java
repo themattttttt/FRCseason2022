@@ -227,7 +227,7 @@ public final class Constants {
     public static final double kfShooter = 0.0002;
     public static final double kMaxOutputShooter = 1.0;
     public static final double kMinOutputShooter = -1.0;
-    public static final double kUpperMotorOutput = 0.2;
+    public static final double kUpperMotorOutput = 0.05;
     public static final double kUpperSuckMotorOutput = -0.5;
 
   }
