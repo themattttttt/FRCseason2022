@@ -98,7 +98,7 @@ public class RobotContainer {
   private final JoystickButton ReleaseButton = new JoystickButton(m_operateController, XboxController.Button.kY.value);
   private final JoystickButton RetractButton = new JoystickButton(m_operateController, XboxController.Button.kX.value);
   private final JoystickButton LightButton = new JoystickButton(m_operateController, XboxController.Button.kStart.value);
-  private final JoystickButton SuckButton = new JoystickButton(m_operateController, XboxController.Button.kBack.value);
+  //private final JoystickButton SuckButton = new JoystickButton(m_operateController, XboxController.Button.kBack.value);
 
   private final JoystickButton armForwardButton = new JoystickButton(m_operateController,XboxController.Button.kRightBumper.value);
   private final JoystickButton armBackwardButton = new JoystickButton(m_operateController,XboxController.Button.kLeftBumper.value);
@@ -169,9 +169,9 @@ public class RobotContainer {
       RetractButton.whenHeld(new PneumaticRetractCommand(m_pnematic));
       holdTrigger.whileActiveContinuous(new ArmHoldCommand(m_arm));
 
-      ShootButton.toggleWhenPressed(new ShooterUpperCommand(m_uppershooter));
+      ShootButton.whenHeld(new ShooterUpperCommand(m_uppershooter));
       ShootOutButton.whenHeld(new ShooterLowerCommand(m_lowershooter));
-      SuckButton.whenHeld(new ShooterSuckCommand(m_uppershooter, m_lowershooter));
+      //SuckButton.whenHeld(new ShooterSuckCommand(m_uppershooter, m_lowershooter));
       armForwardButton.whenHeld(new ArmForwardTempCommand(m_arm));
       armBackwardButton.whenHeld(new ArmBackwardTempCommand(m_arm));
       LightButton.toggleWhenPressed(new LimelightChangeLightCommand(m_limelight));
